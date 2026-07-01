@@ -52,3 +52,42 @@
       cityPoints.innerHTML = '';
     });
 })();
+
+
+// Mobilní rozbalovací menu Místa
+(function () {
+  const dropdown = document.querySelector('.dropdown');
+  const toggle = document.querySelector('.dropdown-toggle');
+  const menu = document.querySelector('.dropdown-menu');
+  if (!dropdown || !toggle || !menu) return;
+
+  function closeMenu() {
+    dropdown.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+
+  function openMenu() {
+    dropdown.classList.add('open');
+    toggle.setAttribute('aria-expanded', 'true');
+  }
+
+  toggle.setAttribute('aria-expanded', 'false');
+
+  toggle.addEventListener('click', (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    dropdown.classList.contains('open') ? closeMenu() : openMenu();
+  });
+
+  menu.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => closeMenu());
+  });
+
+  document.addEventListener('click', (event) => {
+    if (!dropdown.contains(event.target)) closeMenu();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeMenu();
+  });
+})();
