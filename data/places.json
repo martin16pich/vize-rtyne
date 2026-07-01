@@ -28,5 +28,11 @@
     "title": "Centrum města",
     "x": 43.4,
     "y": 38.53
+  },
+  {
+    "id": "odpady",
+    "title": "Odpadová místa",
+    "x": 50.0,
+    "y": 50.0
   }
 ]
