@@ -1,0 +1,38 @@
+[
+  {
+    "id": "hriste",
+    "number": "1",
+    "title": "Dětské hřiště",
+    "text": "Přírodní herní prvek pro děti, který zapadne do klidového charakteru okolí rybníka.",
+    "image": "assets/hotspots/hriste.jpg",
+    "x": 52.5,
+    "y": 54.8
+  },
+  {
+    "id": "ohniste",
+    "number": "2",
+    "title": "Ohniště",
+    "text": "Jednoduché pobytové místo pro setkávání, odpočinek a malé komunitní akce.",
+    "image": "assets/hotspots/ohniste.jpg",
+    "x": 69.6,
+    "y": 55.4
+  },
+  {
+    "id": "privoz",
+    "number": "3",
+    "title": "Přívoz přes rybník",
+    "text": "Zážitkový prvek, který propojí břehy a nabídne nový pohled na rybník.",
+    "image": "assets/hotspots/privoz.jpg",
+    "x": 61.9,
+    "y": 58.2
+  },
+  {
+    "id": "molo",
+    "number": "4",
+    "title": "Molo u vody",
+    "text": "Dřevěné molo pro posezení u hladiny, pozorování přírody a klidný kontakt s vodou.",
+    "image": "assets/hotspots/molo.jpg",
+    "x": 51.2,
+    "y": 63.4
+  }
+]
