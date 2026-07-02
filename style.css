@@ -971,62 +971,84 @@ pointer-events:auto}
 }
 
 
-
-/* Šipka pro místo mimo záběr hlavní mapy */
+/* Šipka pro místo mimo záběr hlavní mapy – trojúhelník bez kolečka */
 .city-hotspot.arrow-right{
-  width:58px;
-  height:58px;
-  border-radius:50%;
-  background:#fff;
-  color:#111;
+  width:54px;
+  height:54px;
+  min-width:54px;
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  color:transparent !important;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:32px;
-  font-weight:900;
   text-decoration:none;
-  box-shadow:0 10px 28px rgba(0,0,0,.26), 0 0 0 8px rgba(255,255,255,.25);
-  animation:pulseArrow 2s ease-out infinite;
+  animation:none;
+}
+
+.city-hotspot.arrow-right::before{
+  content:"";
+  display:block;
+  width:0;
+  height:0;
+  border-top:18px solid transparent;
+  border-bottom:18px solid transparent;
+  border-left:30px solid #fff;
+  filter:drop-shadow(0 8px 16px rgba(0,0,0,.35));
+  animation:pulseTriangle 2s ease-out infinite;
+  transition:border-left-color .18s ease, transform .18s ease;
 }
 
 .city-hotspot.arrow-right::after{
-  display:none;
+  display:none !important;
 }
 
-.city-hotspot.arrow-right:hover{
-  background:#fff;
-  color:#111;
-  transform:translate(-50%,-50%) scale(1.08);
+.city-hotspot.arrow-right:hover,
+.city-hotspot.arrow-right:focus-visible{
+  background:transparent !important;
+  transform:translate(-50%,-50%) scale(1.08) !important;
+}
+
+.city-hotspot.arrow-right:hover::before,
+.city-hotspot.arrow-right:focus-visible::before{
+  border-left-color:#111;
+  transform:scale(1.08);
 }
 
 .city-arrow-symbol{
-  display:block;
-  line-height:1;
-  transform:translateX(1px);
+  display:none !important;
 }
 
 .city-hotspot.arrow-right .city-tooltip{
   left:auto;
-  right:calc(100% + 14px);
+  right:calc(100% + 12px);
   bottom:50%;
   transform:translateY(50%) translateX(4px);
 }
 
-.city-hotspot.arrow-right:hover .city-tooltip{
+.city-hotspot.arrow-right:hover .city-tooltip,
+.city-hotspot.arrow-right:focus-visible .city-tooltip{
   opacity:1;
   transform:translateY(50%) translateX(0);
 }
 
-@keyframes pulseArrow{
-  0%{box-shadow:0 10px 28px rgba(0,0,0,.26), 0 0 0 0 rgba(255,255,255,.72)}
-  70%{box-shadow:0 10px 28px rgba(0,0,0,.26), 0 0 0 20px rgba(255,255,255,0)}
-  100%{box-shadow:0 10px 28px rgba(0,0,0,.26), 0 0 0 0 rgba(255,255,255,0)}
+@keyframes pulseTriangle{
+  0%{filter:drop-shadow(0 8px 16px rgba(0,0,0,.35)) drop-shadow(0 0 0 rgba(255,255,255,.65))}
+  50%{filter:drop-shadow(0 8px 16px rgba(0,0,0,.35)) drop-shadow(0 0 10px rgba(255,255,255,.9))}
+  100%{filter:drop-shadow(0 8px 16px rgba(0,0,0,.35)) drop-shadow(0 0 0 rgba(255,255,255,.65))}
 }
 
 @media (max-width:700px){
   .city-hotspot.arrow-right{
-    width:46px;
-    height:46px;
-    font-size:26px;
+    width:44px;
+    height:44px;
+    min-width:44px;
+  }
+  .city-hotspot.arrow-right::before{
+    border-top-width:15px;
+    border-bottom-width:15px;
+    border-left-width:25px;
   }
 }
