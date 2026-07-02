@@ -91,3 +91,12 @@
     if (event.key === 'Escape') closeMenu();
   });
 })();
+
+
+// Arrow icon support for city map
+document.querySelectorAll('.city-hotspot').forEach(el=>{
+  if(el.dataset.icon==='arrow-right'){
+    el.classList.add('arrow-right');
+    el.innerHTML='➜';
+  }
+});
