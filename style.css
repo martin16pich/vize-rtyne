@@ -971,24 +971,62 @@ pointer-events:auto}
 }
 
 
-.hotspot.arrow-right{
-    width:58px;
-    height:58px;
-    border-radius:50%;
-    background:#fff;
-    color:#111;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:30px;
-    font-weight:700;
-    box-shadow:0 6px 20px rgba(0,0,0,.25);
-    cursor:pointer;
-    animation:pulseArrow 2s infinite;
+
+/* Šipka pro místo mimo záběr hlavní mapy */
+.city-hotspot.arrow-right{
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  background:#fff;
+  color:#111;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:32px;
+  font-weight:900;
+  text-decoration:none;
+  box-shadow:0 10px 28px rgba(0,0,0,.26), 0 0 0 8px rgba(255,255,255,.25);
+  animation:pulseArrow 2s ease-out infinite;
 }
-.hotspot.arrow-right:hover{transform:translate(-50%,-50%) scale(1.1);}
+
+.city-hotspot.arrow-right::after{
+  display:none;
+}
+
+.city-hotspot.arrow-right:hover{
+  background:#fff;
+  color:#111;
+  transform:translate(-50%,-50%) scale(1.08);
+}
+
+.city-arrow-symbol{
+  display:block;
+  line-height:1;
+  transform:translateX(1px);
+}
+
+.city-hotspot.arrow-right .city-tooltip{
+  left:auto;
+  right:calc(100% + 14px);
+  bottom:50%;
+  transform:translateY(50%) translateX(4px);
+}
+
+.city-hotspot.arrow-right:hover .city-tooltip{
+  opacity:1;
+  transform:translateY(50%) translateX(0);
+}
+
 @keyframes pulseArrow{
-0%{box-shadow:0 0 0 0 rgba(255,255,255,.7);}
-70%{box-shadow:0 0 0 18px rgba(255,255,255,0);}
-100%{box-shadow:0 0 0 0 rgba(255,255,255,0);}
+  0%{box-shadow:0 10px 28px rgba(0,0,0,.26), 0 0 0 0 rgba(255,255,255,.72)}
+  70%{box-shadow:0 10px 28px rgba(0,0,0,.26), 0 0 0 20px rgba(255,255,255,0)}
+  100%{box-shadow:0 10px 28px rgba(0,0,0,.26), 0 0 0 0 rgba(255,255,255,0)}
+}
+
+@media (max-width:700px){
+  .city-hotspot.arrow-right{
+    width:46px;
+    height:46px;
+    font-size:26px;
+  }
 }

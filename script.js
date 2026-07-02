@@ -40,6 +40,16 @@
       tooltip.className = 'city-tooltip';
       tooltip.textContent = place.title;
 
+      if (place.icon === 'arrow-right') {
+        link.classList.add('arrow-right');
+        link.dataset.icon = 'arrow-right';
+
+        const arrow = document.createElement('span');
+        arrow.className = 'city-arrow-symbol';
+        arrow.textContent = '➜';
+        link.appendChild(arrow);
+      }
+
       link.appendChild(tooltip);
       cityPoints.appendChild(link);
     });
@@ -92,11 +102,3 @@
   });
 })();
 
-
-// Arrow icon support for city map
-document.querySelectorAll('.city-hotspot').forEach(el=>{
-  if(el.dataset.icon==='arrow-right'){
-    el.classList.add('arrow-right');
-    el.innerHTML='➜';
-  }
-});
