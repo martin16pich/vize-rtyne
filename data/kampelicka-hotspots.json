@@ -2,7 +2,7 @@
   {
     "id": "kulickova-draha",
     "title": "Kuličková dráha",
-    "text": "Herní prvek pro děti, který podporuje tvořivost, spolupráci a objevování v parku.",
+    "text": "Herní prvek pro děti.",
     "image": "assets/hotspots/kampelicka-kulickova-draha.jpg",
     "x": 37.5,
     "y": 46.0
@@ -10,7 +10,7 @@
   {
     "id": "zastavka",
     "title": "Zastávka",
-    "text": "Nová autobusová zastávka s dřevěným obkladem a zelenou střechou kultivuje veřejný prostor.",
+    "text": "Nová autobusová zastávka, která bude zároveň sloužit jako altán k parku.",
     "image": "assets/hotspots/kampelicka-zastavka.jpg",
     "x": 44.7,
     "y": 60.8
@@ -18,9 +18,9 @@
   {
     "id": "pruzinova-houpacka",
     "title": "Pružinová houpačka",
-    "text": "Drobný herní prvek pro nejmenší děti doplňuje klidovou část parku.",
+    "text": "Houpačka pro malé děti.",
     "image": "assets/hotspots/kampelicka-pruzinova-houpacka.jpg",
-    "x": 58.5,
-    "y": 49.3
+    "x": 50.5,
+    "y": 53.5
   }
 ]
