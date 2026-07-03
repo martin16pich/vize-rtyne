@@ -1,0 +1,39 @@
+[
+  {
+    "id": "zabarna",
+    "title": "Žabárna",
+    "x": 9.72,
+    "y": 68.73
+  },
+  {
+    "id": "kampelicka",
+    "title": "Park před Kampeličkou",
+    "x": 96.2,
+    "y": 47.42,
+    "icon": "arrow-right"
+  },
+  {
+    "id": "hornicka",
+    "title": "Hornická ulice",
+    "x": 50.09,
+    "y": 32.85
+  },
+  {
+    "id": "namesti",
+    "title": "Náměstí",
+    "x": 45.55,
+    "y": 37.25
+  },
+  {
+    "id": "centrum",
+    "title": "Centrum města",
+    "x": 57.2,
+    "y": 30.98
+  },
+  {
+    "id": "odpady",
+    "title": "Odpadová místa",
+    "x": 56.49,
+    "y": 65.15
+  }
+]

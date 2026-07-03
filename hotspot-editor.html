@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Editor hotspotů | Vize Rtyně</title>
+  <style>
+    :root{--bg:#0d120f;--panel:#121a15;--muted:rgba(255,255,255,.68);--white:#fff;--line:rgba(255,255,255,.14)}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--white);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow:hidden}
+    .app{height:100svh;display:grid;grid-template-columns:minmax(0,1fr) 420px}
+    .stage{position:relative;background:#111;overflow:hidden;cursor:crosshair}
+    .stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;user-select:none;pointer-events:none}
+    .points{position:absolute;inset:0;z-index:2}
+    .point{position:absolute;left:var(--x);top:var(--y);width:28px;height:28px;border:2px solid rgba(0,0,0,.18);border-radius:999px;background:#fff;box-shadow:0 12px 32px rgba(0,0,0,.35),0 0 0 6px rgba(255,255,255,.28);transform:translate(-50%,-50%);cursor:grab}
+    .point:hover,.point.active{background:#111;box-shadow:0 12px 32px rgba(0,0,0,.35),0 0 0 8px rgba(255,255,255,.58)}
+    .point:active{cursor:grabbing}
+    .label{position:absolute;left:50%;bottom:calc(100% + 12px);transform:translateX(-50%);background:#fff;color:#111;padding:7px 12px;border-radius:999px;font-size:14px;font-weight:850;white-space:nowrap;box-shadow:0 10px 28px rgba(0,0,0,.22)}
+    .panel{background:var(--panel);border-left:1px solid var(--line);padding:22px;overflow:auto}
+    h1{margin:0 0 8px;font-size:26px;letter-spacing:-.03em}
+    p{margin:0 0 16px;color:var(--muted);line-height:1.45;font-weight:650}
+    label{display:block;margin:14px 0 6px;font-weight:850;font-size:13px;color:rgba(255,255,255,.78)}
+    select,input,textarea{width:100%;border:1px solid var(--line);border-radius:12px;background:#070b08;color:#fff;padding:11px 12px;font:inherit;font-size:14px}
+    textarea{min-height:84px;resize:vertical;line-height:1.45}
+    .list{display:grid;gap:8px;margin:16px 0}
+    .list button{border:1px solid var(--line);background:rgba(255,255,255,.06);color:#fff;border-radius:14px;padding:11px 12px;text-align:left;font-weight:850;cursor:pointer}
+    .list button.active{background:#fff;color:#111}
+    .coords{padding:12px;border-radius:14px;background:rgba(255,255,255,.08);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;line-height:1.55;margin:16px 0;white-space:pre-wrap}
+    .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+    .actions button,.actions a{border:0;border-radius:999px;padding:12px 14px;font-weight:900;cursor:pointer;text-align:center;background:#fff;color:#111;text-decoration:none}
+    .actions .secondary{background:rgba(255,255,255,.12);color:#fff}
+    .output{min-height:230px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+    .help{font-size:13px;color:rgba(255,255,255,.62);margin-top:14px}
+    @media(max-width:900px){body{overflow:auto}.app{height:auto;min-height:100svh;display:block}.stage{height:56svh}.panel{border-left:0;border-top:1px solid var(--line)}}
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="stage" id="stage" aria-label="Editor hotspotů">
+      <img id="stageImage" src="" alt="" />
+      <div class="points" id="points"></div>
+    </section>
+    <aside class="panel">
+      <h1>Editor hotspotů</h1>
+      <p>Vyber místo, přetáhni bod a uprav název, popis nebo cestu k fotce. Potom stáhni JSON a nahraj ho do složky <strong>data</strong>.</p>
+
+      <label for="placeSelect">Místo</label>
+      <select id="placeSelect">
+        <option value="zabarna">Žabárna</option>
+        <option value="kampelicka">Park před Kampeličkou</option>
+      </select>
+
+      <div class="list" id="hotspotList"></div>
+      <div class="coords" id="coords">Vyber hotspot.</div>
+
+      <label for="titleInput">Název</label>
+      <input id="titleInput" />
+
+      <label for="textInput">Popis</label>
+      <textarea id="textInput"></textarea>
+
+      <label for="imageInput">Cesta k fotce</label>
+      <input id="imageInput" />
+
+      <div class="actions">
+        <button id="applyChanges" type="button">Použít změny</button>
+        <button id="copyJson" type="button" class="secondary">Kopírovat JSON</button>
+        <button id="downloadJson" type="button">Stáhnout JSON</button>
+        <a href="index.html" class="secondary">Zpět na web</a>
+      </div>
+
+      <textarea class="output" id="output" spellcheck="false"></textarea>
+      <div class="help">Fotku v kartě změníš nejsnáze tak, že v GitHubu nahraješ nový obrázek pod stejným názvem. Pokud chceš jiný název, změň tady pole „Cesta k fotce“.</div>
+    </aside>
+  </main>
+
+  <script>
+    (function(){
+      const configs = {
+        zabarna: {
+          title: 'Žabárna',
+          image: 'images/zabarna/vize.jpg',
+          data: 'data/hotspots.json',
+          download: 'hotspots.json'
+        },
+        kampelicka: {
+          title: 'Park před Kampeličkou',
+          image: 'images/kampelicka/vize.jpg',
+          data: 'data/kampelicka-hotspots.json',
+          download: 'kampelicka-hotspots.json'
+        }
+      };
+
+      const stage = document.getElementById('stage');
+      const stageImage = document.getElementById('stageImage');
+      const pointsEl = document.getElementById('points');
+      const placeSelect = document.getElementById('placeSelect');
+      const listEl = document.getElementById('hotspotList');
+      const coordsEl = document.getElementById('coords');
+      const titleInput = document.getElementById('titleInput');
+      const textInput = document.getElementById('textInput');
+      const imageInput = document.getElementById('imageInput');
+      const outputEl = document.getElementById('output');
+      const applyBtn = document.getElementById('applyChanges');
+      const copyBtn = document.getElementById('copyJson');
+      const downloadBtn = document.getElementById('downloadJson');
+
+      let currentKey = 'zabarna';
+      let items = [];
+      let activeId = null;
+      let draggingId = null;
+
+      function clamp(value,min,max){return Math.max(min,Math.min(max,value));}
+      function fmt(value){return Number(value).toFixed(2);}
+      function activeItem(){return items.find(i => i.id === activeId) || items[0];}
+
+      function updateOutput(){
+        const active = activeItem();
+        if(active){
+          coordsEl.textContent = `${active.title}\nx: ${fmt(active.x)}\ny: ${fmt(active.y)}`;
+          titleInput.value = active.title || '';
+          textInput.value = active.text || '';
+          imageInput.value = active.image || '';
+        }
+        outputEl.value = JSON.stringify(items.map(item => ({
+          id: item.id,
+          title: item.title,
+          text: item.text,
+          image: item.image,
+          x: Number(fmt(item.x)),
+          y: Number(fmt(item.y))
+        })), null, 2);
+        document.querySelectorAll('.point').forEach(p => p.classList.toggle('active', p.dataset.id === activeId));
+        document.querySelectorAll('.list button').forEach(b => b.classList.toggle('active', b.dataset.id === activeId));
+      }
+
+      function setActive(id){activeId = id; updateOutput();}
+
+      function moveItem(id, clientX, clientY){
+        const rect = stage.getBoundingClientRect();
+        const x = clamp(((clientX - rect.left) / rect.width) * 100, 0, 100);
+        const y = clamp(((clientY - rect.top) / rect.height) * 100, 0, 100);
+        const item = items.find(i => i.id === id);
+        if(!item) return;
+        item.x = Number(fmt(x));
+        item.y = Number(fmt(y));
+        const point = document.querySelector(`.point[data-id="${CSS.escape(id)}"]`);
+        if(point){
+          point.style.setProperty('--x', `${item.x}%`);
+          point.style.setProperty('--y', `${item.y}%`);
+        }
+        updateOutput();
+      }
+
+      function render(){
+        pointsEl.innerHTML = '';
+        listEl.innerHTML = '';
+        items.forEach(item => {
+          const point = document.createElement('button');
+          point.className = 'point';
+          point.type = 'button';
+          point.dataset.id = item.id;
+          point.style.setProperty('--x', `${item.x}%`);
+          point.style.setProperty('--y', `${item.y}%`);
+          point.setAttribute('aria-label', item.title);
+
+          const label = document.createElement('span');
+          label.className = 'label';
+          label.textContent = item.title;
+          point.appendChild(label);
+
+          point.addEventListener('pointerdown', event => {
+            event.preventDefault();
+            draggingId = item.id;
+            point.setPointerCapture(event.pointerId);
+            setActive(item.id);
+            moveItem(item.id, event.clientX, event.clientY);
+          });
+          point.addEventListener('pointermove', event => {
+            if(draggingId !== item.id) return;
+            moveItem(item.id, event.clientX, event.clientY);
+          });
+          point.addEventListener('pointerup', () => draggingId = null);
+          pointsEl.appendChild(point);
+
+          const row = document.createElement('button');
+          row.type = 'button';
+          row.dataset.id = item.id;
+          row.textContent = item.title;
+          row.addEventListener('click', () => setActive(item.id));
+          listEl.appendChild(row);
+        });
+        setActive(items[0]?.id || null);
+      }
+
+      function loadPlace(key){
+        currentKey = key;
+        const cfg = configs[key];
+        stageImage.src = cfg.image;
+        stageImage.alt = cfg.title;
+        fetch(cfg.data)
+          .then(r => r.json())
+          .then(data => { items = data; render(); })
+          .catch(() => { items = []; render(); });
+      }
+
+      stage.addEventListener('click', event => {
+        if(!activeId || event.target.closest('.point')) return;
+        moveItem(activeId, event.clientX, event.clientY);
+      });
+
+      applyBtn.addEventListener('click', () => {
+        const item = activeItem();
+        if(!item) return;
+        item.title = titleInput.value.trim();
+        item.text = textInput.value.trim();
+        item.image = imageInput.value.trim();
+        render();
+        setActive(item.id);
+      });
+
+      copyBtn.addEventListener('click', async () => {
+        try{
+          await navigator.clipboard.writeText(outputEl.value);
+          copyBtn.textContent = 'Zkopírováno';
+          setTimeout(() => copyBtn.textContent = 'Kopírovat JSON', 1200);
+        }catch{outputEl.select();}
+      });
+
+      downloadBtn.addEventListener('click', () => {
+        const cfg = configs[currentKey];
+        const blob = new Blob([outputEl.value + '\n'], {type:'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = cfg.download;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+      });
+
+      placeSelect.addEventListener('change', () => loadPlace(placeSelect.value));
+      loadPlace(currentKey);
+    })();
+  </script>
+</body>
+</html>
