@@ -10,8 +10,9 @@
 body.is-locked{
     overflow:hidden;
 }
-body.is-locked> *:not(#passwordGate){
-    display:none;
+body.is-locked > *:not(#passwordGate){
+    pointer-events:none;
+    user-select:none;
 }
 #passwordGate{
     position:fixed;
