@@ -3,46 +3,71 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Editor hotspotů | Vize Rtyně</title>
+  <title>Editor hotspotů 2.0 | Vize Rtyně</title>
   <style>
-    :root{--bg:#0d120f;--panel:#121a15;--muted:rgba(255,255,255,.68);--white:#fff;--line:rgba(255,255,255,.14)}
+    :root{
+      --bg:#0d120f;--panel:#121a15;--muted:rgba(255,255,255,.68);
+      --white:#fff;--line:rgba(255,255,255,.14);--accent:#2f8d4e;--danger:#d93b3b;
+    }
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);color:var(--white);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;overflow:hidden}
-    .app{height:100svh;display:grid;grid-template-columns:minmax(0,1fr) 420px}
-    .stage{position:relative;background:#111;overflow:hidden;cursor:crosshair}
+    button,input,textarea,select{font:inherit}
+    .app{height:100svh;display:grid;grid-template-columns:minmax(0,1fr) 440px}
+    .stage-wrap{position:relative;overflow:hidden;background:#111}
+    .stage{position:absolute;inset:0;overflow:hidden;cursor:crosshair;transform-origin:center center}
     .stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;user-select:none;pointer-events:none}
     .points{position:absolute;inset:0;z-index:2}
-    .point{position:absolute;left:var(--x);top:var(--y);width:28px;height:28px;border:2px solid rgba(0,0,0,.18);border-radius:999px;background:#fff;box-shadow:0 12px 32px rgba(0,0,0,.35),0 0 0 6px rgba(255,255,255,.28);transform:translate(-50%,-50%);cursor:grab}
-    .point:hover,.point.active{background:#111;box-shadow:0 12px 32px rgba(0,0,0,.35),0 0 0 8px rgba(255,255,255,.58)}
+    .point{position:absolute;left:var(--x);top:var(--y);width:30px;height:30px;border:2px solid rgba(0,0,0,.18);border-radius:999px;background:#fff;box-shadow:0 12px 32px rgba(0,0,0,.35),0 0 0 6px rgba(255,255,255,.28);transform:translate(-50%,-50%);cursor:grab}
+    .point:hover{background:#111}
+    .point.active{background:var(--danger);box-shadow:0 12px 32px rgba(0,0,0,.35),0 0 0 8px rgba(217,59,59,.35)}
     .point:active{cursor:grabbing}
     .label{position:absolute;left:50%;bottom:calc(100% + 12px);transform:translateX(-50%);background:#fff;color:#111;padding:7px 12px;border-radius:999px;font-size:14px;font-weight:850;white-space:nowrap;box-shadow:0 10px 28px rgba(0,0,0,.22)}
-    .panel{background:var(--panel);border-left:1px solid var(--line);padding:22px;overflow:auto}
+    .zoom-bar{position:absolute;z-index:5;left:16px;bottom:16px;display:flex;gap:8px;align-items:center;padding:8px;border-radius:999px;background:rgba(0,0,0,.65);backdrop-filter:blur(8px)}
+    .zoom-bar button{width:36px;height:36px;border:0;border-radius:999px;background:#fff;color:#111;font-weight:900;cursor:pointer}
+    .zoom-bar span{min-width:56px;text-align:center;font-weight:800}
+    .panel{background:var(--panel);border-left:1px solid var(--line);padding:20px;overflow:auto}
     h1{margin:0 0 8px;font-size:26px;letter-spacing:-.03em}
     p{margin:0 0 16px;color:var(--muted);line-height:1.45;font-weight:650}
-    label{display:block;margin:14px 0 6px;font-weight:850;font-size:13px;color:rgba(255,255,255,.78)}
-    select,input,textarea{width:100%;border:1px solid var(--line);border-radius:12px;background:#070b08;color:#fff;padding:11px 12px;font:inherit;font-size:14px}
-    textarea{min-height:84px;resize:vertical;line-height:1.45}
-    .list{display:grid;gap:8px;margin:16px 0}
+    label{display:block;margin:12px 0 6px;font-weight:850;font-size:13px;color:rgba(255,255,255,.78)}
+    select,input,textarea{width:100%;border:1px solid var(--line);border-radius:12px;background:#070b08;color:#fff;padding:11px 12px;font-size:14px}
+    textarea{min-height:82px;resize:vertical;line-height:1.45}
+    .list{display:grid;gap:8px;margin:14px 0}
     .list button{border:1px solid var(--line);background:rgba(255,255,255,.06);color:#fff;border-radius:14px;padding:11px 12px;text-align:left;font-weight:850;cursor:pointer}
     .list button.active{background:#fff;color:#111}
-    .coords{padding:12px;border-radius:14px;background:rgba(255,255,255,.08);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;line-height:1.55;margin:16px 0;white-space:pre-wrap}
-    .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
-    .actions button,.actions a{border:0;border-radius:999px;padding:12px 14px;font-weight:900;cursor:pointer;text-align:center;background:#fff;color:#111;text-decoration:none}
-    .actions .secondary{background:rgba(255,255,255,.12);color:#fff}
-    .output{min-height:230px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
-    .help{font-size:13px;color:rgba(255,255,255,.62);margin-top:14px}
-    @media(max-width:900px){body{overflow:auto}.app{height:auto;min-height:100svh;display:block}.stage{height:56svh}.panel{border-left:0;border-top:1px solid var(--line)}}
+    .coords{padding:12px;border-radius:14px;background:rgba(255,255,255,.08);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;line-height:1.55;margin:14px 0;white-space:pre-wrap}
+    .actions,.manage{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:14px 0}
+    .actions button,.actions a,.manage button{border:0;border-radius:999px;padding:12px 14px;font-weight:900;cursor:pointer;text-align:center;background:#fff;color:#111;text-decoration:none}
+    .actions .secondary,.manage .secondary{background:rgba(255,255,255,.12);color:#fff}
+    .manage .danger{background:var(--danger);color:#fff}
+    .output{min-height:220px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+    .help{font-size:13px;color:rgba(255,255,255,.62);margin-top:14px;line-height:1.5}
+    .hint{padding:10px 12px;border-radius:12px;background:rgba(47,141,78,.18);border:1px solid rgba(47,141,78,.35);font-size:13px;line-height:1.45;margin-bottom:14px}
+    .row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}
+    .row button{height:42px;border:0;border-radius:12px;background:#fff;color:#111;font-weight:900;padding:0 14px;cursor:pointer}
+    input[type=file]{display:none}
+    @media(max-width:900px){body{overflow:auto}.app{height:auto;min-height:100svh;display:block}.stage-wrap{height:58svh}.panel{border-left:0;border-top:1px solid var(--line)}}
   </style>
 </head>
 <body>
   <main class="app">
-    <section class="stage" id="stage" aria-label="Editor hotspotů">
-      <img id="stageImage" src="" alt="" />
-      <div class="points" id="points"></div>
+    <section class="stage-wrap">
+      <div class="stage" id="stage" aria-label="Editor hotspotů">
+        <img id="stageImage" src="" alt="" />
+        <div class="points" id="points"></div>
+      </div>
+      <div class="zoom-bar" aria-label="Přiblížení">
+        <button id="zoomOut" type="button">−</button>
+        <span id="zoomValue">100 %</span>
+        <button id="zoomIn" type="button">+</button>
+        <button id="zoomReset" type="button" title="Obnovit přiblížení">↺</button>
+      </div>
     </section>
+
     <aside class="panel">
-      <h1>Editor hotspotů</h1>
-      <p>Vyber místo, přetáhni bod a uprav název, popis nebo cestu k fotce. Potom stáhni JSON a nahraj ho do složky <strong>data</strong>.</p>
+      <h1>Editor hotspotů 2.0</h1>
+      <p>Přetahuj body myší, přidávej nové, duplikuj nebo maž. Nakonec stáhni JSON a nahraď jím původní soubor ve složce <strong>data</strong>.</p>
+
+      <div class="hint">Tip: vybraný bod posouváš i šipkami. <strong>Shift + šipka</strong> posune bod rychleji.</div>
 
       <label for="placeSelect">Místo</label>
       <select id="placeSelect">
@@ -50,17 +75,34 @@
         <option value="kampelicka">Park před Kampeličkou</option>
       </select>
 
+      <div class="manage">
+        <button id="addHotspot" type="button">＋ Přidat bod</button>
+        <button id="duplicateHotspot" type="button" class="secondary">Duplikovat</button>
+        <button id="deleteHotspot" type="button" class="danger">Smazat</button>
+        <button id="centerHotspot" type="button" class="secondary">Na střed</button>
+      </div>
+
       <div class="list" id="hotspotList"></div>
       <div class="coords" id="coords">Vyber hotspot.</div>
 
       <label for="titleInput">Název</label>
       <input id="titleInput" />
 
+      <label for="idInput">ID</label>
+      <div class="row">
+        <input id="idInput" />
+        <button id="makeId" type="button">Vytvořit z názvu</button>
+      </div>
+
       <label for="textInput">Popis</label>
       <textarea id="textInput"></textarea>
 
       <label for="imageInput">Cesta k fotce</label>
-      <input id="imageInput" />
+      <div class="row">
+        <input id="imageInput" />
+        <button id="pickImage" type="button">Vybrat</button>
+      </div>
+      <input id="imageFile" type="file" accept="image/*" />
 
       <div class="actions">
         <button id="applyChanges" type="button">Použít změny</button>
@@ -70,7 +112,7 @@
       </div>
 
       <textarea class="output" id="output" spellcheck="false"></textarea>
-      <div class="help">Fotku v kartě změníš nejsnáze tak, že v GitHubu nahraješ nový obrázek pod stejným názvem. Pokud chceš jiný název, změň tady pole „Cesta k fotce“.</div>
+      <div class="help">Editor kvůli bezpečnosti prohlížeče nemůže sám přepsat původní soubor. Po kliknutí na „Stáhnout JSON“ nahraď příslušný soubor ve složce <code>data</code>. Tlačítko „Vybrat“ doplní jen název souboru do cesty; obrázek pak zkopíruj do správné složky projektu.</div>
     </aside>
   </main>
 
@@ -81,13 +123,15 @@
           title: 'Žabárna',
           image: 'images/zabarna/vize.jpg',
           data: 'data/hotspots.json',
-          download: 'hotspots.json'
+          download: 'hotspots.json',
+          imageFolder: 'images/zabarna/hotspots/'
         },
         kampelicka: {
           title: 'Park před Kampeličkou',
           image: 'images/kampelicka/vize.jpg',
           data: 'data/kampelicka-hotspots.json',
-          download: 'kampelicka-hotspots.json'
+          download: 'kampelicka-hotspots.json',
+          imageFolder: 'images/kampelicka/hotspots/'
         }
       };
 
@@ -98,31 +142,48 @@
       const listEl = document.getElementById('hotspotList');
       const coordsEl = document.getElementById('coords');
       const titleInput = document.getElementById('titleInput');
+      const idInput = document.getElementById('idInput');
       const textInput = document.getElementById('textInput');
       const imageInput = document.getElementById('imageInput');
+      const imageFile = document.getElementById('imageFile');
       const outputEl = document.getElementById('output');
       const applyBtn = document.getElementById('applyChanges');
       const copyBtn = document.getElementById('copyJson');
       const downloadBtn = document.getElementById('downloadJson');
+      const addBtn = document.getElementById('addHotspot');
+      const duplicateBtn = document.getElementById('duplicateHotspot');
+      const deleteBtn = document.getElementById('deleteHotspot');
+      const centerBtn = document.getElementById('centerHotspot');
+      const makeIdBtn = document.getElementById('makeId');
+      const pickImageBtn = document.getElementById('pickImage');
+      const zoomInBtn = document.getElementById('zoomIn');
+      const zoomOutBtn = document.getElementById('zoomOut');
+      const zoomResetBtn = document.getElementById('zoomReset');
+      const zoomValue = document.getElementById('zoomValue');
 
       let currentKey = 'zabarna';
       let items = [];
       let activeId = null;
       let draggingId = null;
+      let zoom = 1;
 
       function clamp(value,min,max){return Math.max(min,Math.min(max,value));}
       function fmt(value){return Number(value).toFixed(2);}
       function activeItem(){return items.find(i => i.id === activeId) || items[0];}
-
-      function updateOutput(){
-        const active = activeItem();
-        if(active){
-          coordsEl.textContent = `${active.title}\nx: ${fmt(active.x)}\ny: ${fmt(active.y)}`;
-          titleInput.value = active.title || '';
-          textInput.value = active.text || '';
-          imageInput.value = active.image || '';
-        }
-        outputEl.value = JSON.stringify(items.map(item => ({
+      function slugify(text){
+        return (text || 'novy-bod')
+          .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+          .toLowerCase().trim()
+          .replace(/[^a-z0-9]+/g,'-')
+          .replace(/^-+|-+$/g,'') || 'novy-bod';
+      }
+      function uniqueId(base){
+        let id = base; let n = 2;
+        while(items.some(item => item.id === id)) id = `${base}-${n++}`;
+        return id;
+      }
+      function serialize(){
+        return JSON.stringify(items.map(item => ({
           id: item.id,
           title: item.title,
           text: item.text,
@@ -130,117 +191,112 @@
           x: Number(fmt(item.x)),
           y: Number(fmt(item.y))
         })), null, 2);
+      }
+      function updateOutput(){
+        const active = activeItem();
+        if(active){
+          coordsEl.textContent = `${active.title}\nx: ${fmt(active.x)}\ny: ${fmt(active.y)}`;
+          titleInput.value = active.title || '';
+          idInput.value = active.id || '';
+          textInput.value = active.text || '';
+          imageInput.value = active.image || '';
+        } else {
+          coordsEl.textContent = 'Žádný hotspot.';
+          titleInput.value = idInput.value = textInput.value = imageInput.value = '';
+        }
+        outputEl.value = serialize();
         document.querySelectorAll('.point').forEach(p => p.classList.toggle('active', p.dataset.id === activeId));
         document.querySelectorAll('.list button').forEach(b => b.classList.toggle('active', b.dataset.id === activeId));
       }
-
       function setActive(id){activeId = id; updateOutput();}
-
       function moveItem(id, clientX, clientY){
         const rect = stage.getBoundingClientRect();
         const x = clamp(((clientX - rect.left) / rect.width) * 100, 0, 100);
         const y = clamp(((clientY - rect.top) / rect.height) * 100, 0, 100);
         const item = items.find(i => i.id === id);
         if(!item) return;
-        item.x = Number(fmt(x));
-        item.y = Number(fmt(y));
+        item.x = Number(fmt(x)); item.y = Number(fmt(y));
         const point = document.querySelector(`.point[data-id="${CSS.escape(id)}"]`);
-        if(point){
-          point.style.setProperty('--x', `${item.x}%`);
-          point.style.setProperty('--y', `${item.y}%`);
-        }
+        if(point){point.style.setProperty('--x', `${item.x}%`);point.style.setProperty('--y', `${item.y}%`);}
         updateOutput();
       }
-
-      function render(){
-        pointsEl.innerHTML = '';
-        listEl.innerHTML = '';
+      function nudge(dx,dy){
+        const item = activeItem(); if(!item) return;
+        item.x = clamp(Number(fmt(item.x + dx)),0,100);
+        item.y = clamp(Number(fmt(item.y + dy)),0,100);
+        render(false); setActive(item.id);
+      }
+      function render(resetActive=true){
+        const keepId = activeId;
+        pointsEl.innerHTML = ''; listEl.innerHTML = '';
         items.forEach(item => {
           const point = document.createElement('button');
-          point.className = 'point';
-          point.type = 'button';
-          point.dataset.id = item.id;
-          point.style.setProperty('--x', `${item.x}%`);
-          point.style.setProperty('--y', `${item.y}%`);
+          point.className = 'point'; point.type = 'button'; point.dataset.id = item.id;
+          point.style.setProperty('--x', `${item.x}%`); point.style.setProperty('--y', `${item.y}%`);
           point.setAttribute('aria-label', item.title);
-
-          const label = document.createElement('span');
-          label.className = 'label';
-          label.textContent = item.title;
-          point.appendChild(label);
-
+          const label = document.createElement('span'); label.className = 'label'; label.textContent = item.title; point.appendChild(label);
           point.addEventListener('pointerdown', event => {
-            event.preventDefault();
-            draggingId = item.id;
-            point.setPointerCapture(event.pointerId);
-            setActive(item.id);
-            moveItem(item.id, event.clientX, event.clientY);
+            event.preventDefault(); draggingId = item.id; point.setPointerCapture(event.pointerId); setActive(item.id); moveItem(item.id,event.clientX,event.clientY);
           });
-          point.addEventListener('pointermove', event => {
-            if(draggingId !== item.id) return;
-            moveItem(item.id, event.clientX, event.clientY);
-          });
+          point.addEventListener('pointermove', event => {if(draggingId===item.id) moveItem(item.id,event.clientX,event.clientY);});
           point.addEventListener('pointerup', () => draggingId = null);
           pointsEl.appendChild(point);
-
-          const row = document.createElement('button');
-          row.type = 'button';
-          row.dataset.id = item.id;
-          row.textContent = item.title;
-          row.addEventListener('click', () => setActive(item.id));
-          listEl.appendChild(row);
+          const row = document.createElement('button'); row.type='button'; row.dataset.id=item.id; row.textContent=item.title; row.addEventListener('click',()=>setActive(item.id)); listEl.appendChild(row);
         });
-        setActive(items[0]?.id || null);
+        if(resetActive) setActive(items[0]?.id || null); else setActive(items.some(i=>i.id===keepId)?keepId:(items[0]?.id||null));
       }
-
       function loadPlace(key){
-        currentKey = key;
-        const cfg = configs[key];
-        stageImage.src = cfg.image;
-        stageImage.alt = cfg.title;
-        fetch(cfg.data)
-          .then(r => r.json())
-          .then(data => { items = data; render(); })
-          .catch(() => { items = []; render(); });
+        currentKey = key; const cfg = configs[key]; stageImage.src = cfg.image; stageImage.alt = cfg.title;
+        fetch(cfg.data).then(r=>{if(!r.ok) throw new Error(r.status);return r.json();}).then(data=>{items=data;render();}).catch(()=>{items=[];render();});
       }
+      function setZoom(next){zoom=clamp(next,.6,2.2);stage.style.transform=`scale(${zoom})`;zoomValue.textContent=`${Math.round(zoom*100)} %`;}
 
-      stage.addEventListener('click', event => {
-        if(!activeId || event.target.closest('.point')) return;
-        moveItem(activeId, event.clientX, event.clientY);
-      });
+      stage.addEventListener('click', event => {if(!activeId || event.target.closest('.point')) return; moveItem(activeId,event.clientX,event.clientY);});
+      stage.addEventListener('wheel', event => {event.preventDefault();setZoom(zoom + (event.deltaY<0?.1:-.1));},{passive:false});
 
       applyBtn.addEventListener('click', () => {
-        const item = activeItem();
-        if(!item) return;
-        item.title = titleInput.value.trim();
-        item.text = textInput.value.trim();
-        item.image = imageInput.value.trim();
-        render();
-        setActive(item.id);
+        const item = activeItem(); if(!item) return;
+        const newId = idInput.value.trim();
+        if(!newId){alert('ID nesmí být prázdné.');return;}
+        if(items.some(i=>i!==item && i.id===newId)){alert('Toto ID už existuje.');return;}
+        item.id=newId; item.title=titleInput.value.trim()||'Nový hotspot'; item.text=textInput.value.trim(); item.image=imageInput.value.trim(); activeId=item.id; render(false);
       });
-
-      copyBtn.addEventListener('click', async () => {
-        try{
-          await navigator.clipboard.writeText(outputEl.value);
-          copyBtn.textContent = 'Zkopírováno';
-          setTimeout(() => copyBtn.textContent = 'Kopírovat JSON', 1200);
-        }catch{outputEl.select();}
+      addBtn.addEventListener('click', () => {
+        const id = uniqueId('novy-bod');
+        items.push({id,title:'Nový hotspot',text:'',image:'',x:50,y:50});
+        render(false); setActive(id);
       });
-
+      duplicateBtn.addEventListener('click', () => {
+        const item=activeItem(); if(!item) return;
+        const copy={...item,id:uniqueId(`${item.id}-kopie`),title:`${item.title} – kopie`,x:clamp(item.x+3,0,100),y:clamp(item.y+3,0,100)};
+        items.push(copy); render(false); setActive(copy.id);
+      });
+      deleteBtn.addEventListener('click', () => {
+        const item=activeItem(); if(!item) return;
+        if(!confirm(`Opravdu smazat hotspot „${item.title}“?`)) return;
+        items=items.filter(i=>i!==item); activeId=null; render();
+      });
+      centerBtn.addEventListener('click',()=>{const item=activeItem();if(!item)return;item.x=50;item.y=50;render(false);setActive(item.id);});
+      makeIdBtn.addEventListener('click',()=>{idInput.value=uniqueId(slugify(titleInput.value));});
+      pickImageBtn.addEventListener('click',()=>imageFile.click());
+      imageFile.addEventListener('change',()=>{const file=imageFile.files?.[0];if(!file)return;imageInput.value=configs[currentKey].imageFolder+file.name;});
+      copyBtn.addEventListener('click', async () => {try{await navigator.clipboard.writeText(outputEl.value);copyBtn.textContent='Zkopírováno';setTimeout(()=>copyBtn.textContent='Kopírovat JSON',1200);}catch{outputEl.select();}});
       downloadBtn.addEventListener('click', () => {
-        const cfg = configs[currentKey];
-        const blob = new Blob([outputEl.value + '\n'], {type:'application/json'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = cfg.download;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
+        const cfg=configs[currentKey]; const blob=new Blob([outputEl.value+'\n'],{type:'application/json'}); const url=URL.createObjectURL(blob); const a=document.createElement('a');a.href=url;a.download=cfg.download;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
       });
-
-      placeSelect.addEventListener('change', () => loadPlace(placeSelect.value));
+      zoomInBtn.addEventListener('click',()=>setZoom(zoom+.1));
+      zoomOutBtn.addEventListener('click',()=>setZoom(zoom-.1));
+      zoomResetBtn.addEventListener('click',()=>setZoom(1));
+      document.addEventListener('keydown',event=>{
+        if(['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)) return;
+        const step=event.shiftKey?1:.15;
+        if(event.key==='ArrowLeft'){event.preventDefault();nudge(-step,0);}
+        if(event.key==='ArrowRight'){event.preventDefault();nudge(step,0);}
+        if(event.key==='ArrowUp'){event.preventDefault();nudge(0,-step);}
+        if(event.key==='ArrowDown'){event.preventDefault();nudge(0,step);}
+        if(event.key==='Delete') deleteBtn.click();
+      });
+      placeSelect.addEventListener('change',()=>loadPlace(placeSelect.value));
       loadPlace(currentKey);
     })();
   </script>
