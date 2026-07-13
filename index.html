@@ -6,8 +6,69 @@
   <title>Vize Rtyně</title>
   <meta name="description" content="Interaktivní prezentace vizí veřejných prostor ve Rtyni v Podkrkonoší." />
   <link rel="stylesheet" href="style.css" />
+  <style>
+body.is-locked{
+    overflow:hidden;
+}
+body.is-locked> *:not(#passwordGate){
+    display:none;
+}
+#passwordGate{
+    position:fixed;
+    inset:0;
+    background:#1d2b1f;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:99999;
+    color:white;
+    font-family:Arial,sans-serif;
+}
+.password-box{
+    background:#2b3b2d;
+    padding:40px;
+    border-radius:15px;
+    width:360px;
+    text-align:center;
+}
+.password-box input{
+    width:100%;
+    padding:12px;
+    margin:15px 0;
+    font-size:18px;
+}
+.password-box button{
+    width:100%;
+    padding:12px;
+    font-size:18px;
+    cursor:pointer;
+}
+#passwordError{
+    color:#ffb5b5;
+    margin-top:10px;
+}
+</style>
 </head>
 <body>
+  <div id="passwordGate">
+  <form class="password-box" id="passwordForm">
+    <h1>Vize Rtyně 2035</h1>
+
+    <p>Tato prezentace je v pracovní verzi.<br>Zadejte přístupové heslo.</p>
+
+    <input
+      id="passwordInput"
+      type="password"
+      placeholder="Heslo"
+      autocomplete="current-password"
+      autofocus
+    >
+
+    <button type="submit">Vstoupit</button>
+
+    <div id="passwordError"></div>
+  </form>
+</div>
   <header class="topbar" aria-label="Hlavní navigace">
     <nav class="nav" aria-label="Menu">
       <a href="#uvod" class="nav-link">Mapa</a>
@@ -115,5 +176,47 @@
   <script src="slider.js"></script>
   <script src="hotspots.js"></script>
   <script src="script.js"></script>
+  <script>
+(function () {
+
+const PASSWORD = "ks40";   // <-- sem napiš své heslo
+
+const STORAGE_KEY = "vize-rtyne-login";
+
+const gate = document.getElementById("passwordGate");
+const form = document.getElementById("passwordForm");
+const input = document.getElementById("passwordInput");
+const error = document.getElementById("passwordError");
+
+document.body.classList.add("is-locked");
+
+if(localStorage.getItem(STORAGE_KEY)==="ok"){
+    unlock();
+}
+
+function unlock(){
+    gate.style.display="none";
+    document.body.classList.remove("is-locked");
+}
+
+form.addEventListener("submit",function(e){
+
+    e.preventDefault();
+
+    if(input.value===PASSWORD){
+
+        localStorage.setItem(STORAGE_KEY,"ok");
+        unlock();
+
+    }else{
+
+        error.textContent="Špatné heslo";
+        input.value="";
+    }
+
+});
+
+})();
+</script>
 </body>
 </html>
