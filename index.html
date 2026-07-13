@@ -181,18 +181,12 @@ body.is-locked> *:not(#passwordGate){
 
 const PASSWORD = "ks40";   // <-- sem napiš své heslo
 
-const STORAGE_KEY = "vize-rtyne-login";
-
 const gate = document.getElementById("passwordGate");
 const form = document.getElementById("passwordForm");
 const input = document.getElementById("passwordInput");
 const error = document.getElementById("passwordError");
 
 document.body.classList.add("is-locked");
-
-if(localStorage.getItem(STORAGE_KEY)==="ok"){
-    unlock();
-}
 
 function unlock(){
     gate.style.display="none";
@@ -205,12 +199,11 @@ form.addEventListener("submit",function(e){
 
     if(input.value===PASSWORD){
 
-        localStorage.setItem(STORAGE_KEY,"ok");
-        unlock();
+              unlock();
 
     }else{
 
-        error.textContent="Špatné heslo";
+        error.textContent="Špatné heslo - mazej pryč";
         input.value="";
     }
 
