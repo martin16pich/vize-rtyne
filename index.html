@@ -82,6 +82,8 @@ body.is-locked > *:not(#passwordGate){
           <a href="#namesti">Náměstí</a>
           <a href="#centrum">Centrum města</a>
           <a href="#odpady">Odpadová místa</a>
+          <a href="#rtynsky-trail">Rtyňský trail</a>
+          <a href="#bezecke-trasy-palenka">Běžecké trasy Pálenka</a>
         </div>
       </div>
     </nav>
@@ -172,6 +174,37 @@ body.is-locked > *:not(#passwordGate){
       <div class="title-card"><h1>Odpadová místa</h1></div>
       <div class="labels" aria-hidden="true"><span>Současnost</span><span>Vize budoucnosti</span></div>
     </section>
+
+    <section id="rtynsky-trail" class="compare page empty-future" aria-label="Rtyňský trail">
+      <img class="compare-img compare-future" src="images/rtynsky-trail/vize.jpg" alt="Budoucí vize Rtyňského trailu" />
+      <div class="compare-before"><img class="compare-img compare-current" src="images/rtynsky-trail/soucasnost.jpg" alt="Současný stav Rtyňského trailu" /></div>
+      <input class="compare-range" type="range" min="0" max="100" value="50" aria-label="Porovnání současnosti a vize Rtyňského trailu" />
+      <div class="compare-line" aria-hidden="true"><span class="handle">↔</span></div>
+      <div class="title-card"><h1>Rtyňský trail</h1></div>
+      <div class="hotspots" data-hotspots="data/rtynsky-trail-hotspots.json" aria-label="Klikací body Rtyňského trailu"></div>
+      <article class="info-card" hidden>
+        <button class="card-close" aria-label="Zavřít kartu">×</button>
+        <img src="" alt="" />
+        <div class="card-body"><h2></h2><p></p></div>
+      </article>
+      <div class="labels" aria-hidden="true"><span>Současnost</span><span>Vize budoucnosti</span></div>
+    </section>
+
+    <section id="bezecke-trasy-palenka" class="compare page empty-future" aria-label="Běžecké trasy Pálenka">
+      <img class="compare-img compare-future" src="images/palenka/vize.jpg" alt="Budoucí vize běžeckých tras Pálenka" />
+      <div class="compare-before"><img class="compare-img compare-current" src="images/palenka/soucasnost.jpg" alt="Současný stav běžeckých tras Pálenka" /></div>
+      <input class="compare-range" type="range" min="0" max="100" value="50" aria-label="Porovnání současnosti a vize běžeckých tras Pálenka" />
+      <div class="compare-line" aria-hidden="true"><span class="handle">↔</span></div>
+      <div class="title-card"><h1>Běžecké trasy Pálenka</h1></div>
+      <div class="hotspots" data-hotspots="data/palenka-hotspots.json" aria-label="Klikací body běžeckých tras Pálenka"></div>
+      <article class="info-card" hidden>
+        <button class="card-close" aria-label="Zavřít kartu">×</button>
+        <img src="" alt="" />
+        <div class="card-body"><h2></h2><p></p></div>
+      </article>
+      <div class="labels" aria-hidden="true"><span>Současnost</span><span>Vize budoucnosti</span></div>
+    </section>
+
   </main>
 
   <script src="slider.js"></script>

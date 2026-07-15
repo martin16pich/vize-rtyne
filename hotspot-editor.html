@@ -154,6 +154,8 @@
       <option value="namesti">Náměstí</option>
       <option value="centrum">Centrum města</option>
       <option value="odpady">Odpadová místa</option>
+      <option value="rtynsky-trail">Rtyňský trail</option>
+      <option value="palenka">Běžecké trasy Pálenka</option>
     </select>
     <div class="manage"><button id="addHotspot">＋ Přidat bod</button><button id="duplicateHotspot" class="secondary">Duplikovat</button><button id="deleteHotspot" class="danger">Smazat</button><button id="centerHotspot" class="secondary">Na střed</button></div>
     <div class="list" id="hotspotList"></div><div class="coords" id="coords">Žádný bod.</div>
@@ -176,7 +178,9 @@
     hornicka:{title:'Hornická ulice',mode:'hotspot',image:'images/hornicka/vize.jpg',data:'data/hornicka-hotspots.json',download:'hornicka-hotspots.json'},
     namesti:{title:'Náměstí',mode:'hotspot',image:'images/namesti/vize.jpg',data:'data/namesti-hotspots.json',download:'namesti-hotspots.json'},
     centrum:{title:'Centrum města',mode:'hotspot',image:'images/centrum/vize.jpg',data:'data/centrum-hotspots.json',download:'centrum-hotspots.json'},
-    odpady:{title:'Odpadová místa',mode:'hotspot',image:'images/odpady/vize.jpg',data:'data/odpady-hotspots.json',download:'odpady-hotspots.json'}
+    odpady:{title:'Odpadová místa',mode:'hotspot',image:'images/odpady/vize.jpg',data:'data/odpady-hotspots.json',download:'odpady-hotspots.json'},
+    'rtynsky-trail':{title:'Rtyňský trail',mode:'hotspot',image:'images/rtynsky-trail/vize.jpg',data:'data/rtynsky-trail-hotspots.json',download:'rtynsky-trail-hotspots.json'},
+    palenka:{title:'Běžecké trasy Pálenka',mode:'hotspot',image:'images/palenka/vize.jpg',data:'data/palenka-hotspots.json',download:'palenka-hotspots.json'}
   };
   const $=id=>document.getElementById(id); const stage=$('stage'),stageImage=$('stageImage'),pointsEl=$('points'),placeSelect=$('placeSelect'),listEl=$('hotspotList'),coordsEl=$('coords'),titleInput=$('titleInput'),idInput=$('idInput'),textInput=$('textInput'),imageInput=$('imageInput'),iconInput=$('iconInput'),textField=$('textField'),imageField=$('imageField'),iconField=$('iconField'),outputEl=$('output'),helpText=$('helpText');
   let currentKey='mapa',items=[],activeId=null,draggingId=null,zoom=1;

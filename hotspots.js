@@ -5,7 +5,9 @@
     hornicka: 'data/hornicka-hotspots.json',
     namesti: 'data/namesti-hotspots.json',
     centrum: 'data/centrum-hotspots.json',
-    odpady: 'data/odpady-hotspots.json'
+    odpady: 'data/odpady-hotspots.json',
+    'rtynsky-trail': 'data/rtynsky-trail-hotspots.json',
+    'bezecke-trasy-palenka': 'data/palenka-hotspots.json'
   };
 
   Object.entries(sectionFiles).forEach(([sectionId, dataFile]) => {

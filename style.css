@@ -257,7 +257,7 @@ pointer-events:auto}
 }
 .handle{
   position:absolute;
-  top:50%;left:50%;
+  top:75%;left:50%;
   transform:translate(-50%,-50%);
   width:58px;height:58px;
   display:grid;place-items:center;
@@ -970,7 +970,6 @@ pointer-events:auto}
   }
 }
 
-
 /* Trojúhelníky pro místa mimo záběr hlavní mapy */
 .city-hotspot.arrow-right,
 .city-hotspot.arrow-left,
@@ -988,7 +987,6 @@ pointer-events:auto}
   overflow:visible;
 }
 
-/* Pulsující prstenec – stejný princip jako u koleček */
 .city-hotspot.arrow-right::before,
 .city-hotspot.arrow-left::before,
 .city-hotspot.arrow-down::before{
@@ -1006,7 +1004,6 @@ pointer-events:auto}
   z-index:0;
 }
 
-/* Samotný trojúhelník */
 .city-hotspot.arrow-right::after,
 .city-hotspot.arrow-left::after,
 .city-hotspot.arrow-down::after{
@@ -1054,21 +1051,14 @@ pointer-events:auto}
 }
 
 .city-hotspot.arrow-right:hover::after,
-.city-hotspot.arrow-right:focus-visible::after{
-  border-left-color:#111;
-}
+.city-hotspot.arrow-right:focus-visible::after{border-left-color:#111}
 
 .city-hotspot.arrow-left:hover::after,
-.city-hotspot.arrow-left:focus-visible::after{
-  border-right-color:#111;
-}
+.city-hotspot.arrow-left:focus-visible::after{border-right-color:#111}
 
 .city-hotspot.arrow-down:hover::after,
-.city-hotspot.arrow-down:focus-visible::after{
-  border-top-color:#111;
-}
+.city-hotspot.arrow-down:focus-visible::after{border-top-color:#111}
 
-/* Popisky podle směru */
 .city-hotspot.arrow-right .city-tooltip{
   left:auto;
   right:calc(100% + 8px);
@@ -1108,18 +1098,9 @@ pointer-events:auto}
 }
 
 @keyframes pulseTriangleRing{
-  0%{
-    transform:translate(-50%,-50%) scale(.82);
-    opacity:.7;
-  }
-  75%{
-    transform:translate(-50%,-50%) scale(1.65);
-    opacity:0;
-  }
-  100%{
-    transform:translate(-50%,-50%) scale(1.65);
-    opacity:0;
-  }
+  0%{transform:translate(-50%,-50%) scale(.82);opacity:.7}
+  75%{transform:translate(-50%,-50%) scale(1.65);opacity:0}
+  100%{transform:translate(-50%,-50%) scale(1.65);opacity:0}
 }
 
 @media (max-width:700px){
@@ -1149,4 +1130,3 @@ pointer-events:auto}
     border-top-width:23px;
   }
 }
-
