@@ -40,14 +40,10 @@
       tooltip.className = 'city-tooltip';
       tooltip.textContent = place.title;
 
-      if (place.icon === 'arrow-right') {
-        link.classList.add('arrow-right');
-        link.dataset.icon = 'arrow-right';
-
-        const arrow = document.createElement('span');
-        arrow.className = 'city-arrow-symbol';
-        arrow.textContent = '➜';
-        link.appendChild(arrow);
+      const supportedIcons = ['arrow-right', 'arrow-left', 'arrow-down'];
+      if (supportedIcons.includes(place.icon)) {
+        link.classList.add(place.icon);
+        link.dataset.icon = place.icon;
       }
 
       link.appendChild(tooltip);

@@ -10,8 +10,123 @@
     button,input,textarea,select{font:inherit}.app{height:100svh;display:grid;grid-template-columns:minmax(0,1fr) 440px}.stage-wrap{position:relative;overflow:hidden;background:#111}
     .stage{position:absolute;inset:0;overflow:hidden;cursor:crosshair;transform-origin:center}.stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;user-select:none;pointer-events:none}.points{position:absolute;inset:0;z-index:2}
     .point{position:absolute;left:var(--x);top:var(--y);width:30px;height:30px;border:2px solid rgba(0,0,0,.18);border-radius:999px;background:#fff;box-shadow:0 12px 32px rgba(0,0,0,.35),0 0 0 6px rgba(255,255,255,.28);transform:translate(-50%,-50%);cursor:grab}
-    .point.map-arrow{width:0;height:0;border-radius:0;background:transparent;box-shadow:none;border-top:16px solid transparent;border-bottom:16px solid transparent;border-left:26px solid #fff;border-right:0}.point:hover{background:#111}.point.map-arrow:hover{background:transparent;border-left-color:#111}.point.active{background:var(--danger);box-shadow:0 12px 32px rgba(0,0,0,.35),0 0 0 8px rgba(217,59,59,.35)}.point.map-arrow.active{background:transparent;box-shadow:none;border-left-color:var(--danger)}.point:active{cursor:grabbing}
-    .label{position:absolute;left:50%;bottom:calc(100% + 12px);transform:translateX(-50%);background:#fff;color:#111;padding:7px 12px;border-radius:999px;font-size:14px;font-weight:850;white-space:nowrap;box-shadow:0 10px 28px rgba(0,0,0,.22)}.map-arrow .label{left:auto;right:8px;bottom:22px}
+    .point.map-arrow-right,
+    .point.map-arrow-left,
+    .point.map-arrow-down{
+      width:38px;
+      height:38px;
+      border:0;
+      border-radius:0;
+      background:transparent;
+      box-shadow:none;
+      transform:translate(-50%,-50%);
+      overflow:visible;
+    }
+
+    /* Pulsující prstenec za trojúhelníkem */
+    .point.map-arrow-right::before,
+    .point.map-arrow-left::before,
+    .point.map-arrow-down::before{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:30px;
+      height:30px;
+      border:3px solid rgba(255,255,255,.72);
+      border-radius:50%;
+      transform:translate(-50%,-50%) scale(.85);
+      animation:editorPulse 1.8s ease-out infinite;
+      pointer-events:none;
+      z-index:0;
+    }
+
+    /* Samotný trojúhelník je samostatná vrstva, takže se neusekává */
+    .point.map-arrow-right::after,
+    .point.map-arrow-left::after,
+    .point.map-arrow-down::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      top:50%;
+      width:0;
+      height:0;
+      transform:translate(-50%,-50%);
+      pointer-events:none;
+      z-index:1;
+    }
+
+    .point.map-arrow-right::after{
+      border-top:14px solid transparent;
+      border-bottom:14px solid transparent;
+      border-left:24px solid #fff;
+      margin-left:3px;
+    }
+
+    .point.map-arrow-left::after{
+      border-top:14px solid transparent;
+      border-bottom:14px solid transparent;
+      border-right:24px solid #fff;
+      margin-left:-3px;
+    }
+
+    .point.map-arrow-down::after{
+      border-left:14px solid transparent;
+      border-right:14px solid transparent;
+      border-top:24px solid #fff;
+      margin-top:3px;
+    }
+
+    @keyframes editorPulse{
+      0%{transform:translate(-50%,-50%) scale(.8);opacity:.9}
+      70%{transform:translate(-50%,-50%) scale(1.7);opacity:0}
+      100%{transform:translate(-50%,-50%) scale(1.7);opacity:0}
+    }
+
+    .point:hover{background:#111}
+    .point.map-arrow-right:hover,
+    .point.map-arrow-left:hover,
+    .point.map-arrow-down:hover{background:transparent}
+
+    .point.map-arrow-right:hover::after{border-left-color:#111}
+    .point.map-arrow-left:hover::after{border-right-color:#111}
+    .point.map-arrow-down:hover::after{border-top-color:#111}
+
+    .point.active{
+      background:var(--danger);
+      box-shadow:0 12px 32px rgba(0,0,0,.35),0 0 0 8px rgba(217,59,59,.35)
+    }
+
+    .point.map-arrow-right.active,
+    .point.map-arrow-left.active,
+    .point.map-arrow-down.active{
+      background:transparent;
+      box-shadow:none
+    }
+
+    .point.map-arrow-right.active::after{border-left-color:var(--danger)}
+    .point.map-arrow-left.active::after{border-right-color:var(--danger)}
+    .point.map-arrow-down.active::after{border-top-color:var(--danger)}
+    .point:active{cursor:grabbing}
+
+    .label{
+      position:absolute;
+      left:50%;
+      bottom:calc(100% + 12px);
+      transform:translateX(-50%);
+      background:#fff;
+      color:#111;
+      padding:7px 12px;
+      border-radius:999px;
+      font-size:14px;
+      font-weight:850;
+      white-space:nowrap;
+      box-shadow:0 10px 28px rgba(0,0,0,.22);
+      z-index:3;
+    }
+    .map-arrow-right .label{left:auto;right:30px;bottom:50%;transform:translateY(50%)}
+    .map-arrow-left .label{left:30px;right:auto;bottom:50%;transform:translateY(50%)}
+    .map-arrow-down .label{left:50%;bottom:44px;transform:translateX(-50%)}
     .zoom-bar{position:absolute;z-index:5;left:16px;bottom:16px;display:flex;gap:8px;align-items:center;padding:8px;border-radius:999px;background:rgba(0,0,0,.65);backdrop-filter:blur(8px)}.zoom-bar button{width:36px;height:36px;border:0;border-radius:999px;background:#fff;color:#111;font-weight:900;cursor:pointer}.zoom-bar span{min-width:56px;text-align:center;font-weight:800}
     .panel{background:var(--panel);border-left:1px solid var(--line);padding:20px;overflow:auto}h1{margin:0 0 8px;font-size:26px;letter-spacing:-.03em}p{margin:0 0 16px;color:var(--muted);line-height:1.45;font-weight:650}label{display:block;margin:12px 0 6px;font-weight:850;font-size:13px;color:rgba(255,255,255,.78)}
     select,input,textarea{width:100%;border:1px solid var(--line);border-radius:12px;background:#070b08;color:#fff;padding:11px 12px;font-size:14px}textarea{min-height:82px;resize:vertical;line-height:1.45}.list{display:grid;gap:8px;margin:14px 0}.list button{border:1px solid var(--line);background:rgba(255,255,255,.06);color:#fff;border-radius:14px;padding:11px 12px;text-align:left;font-weight:850;cursor:pointer}.list button.active{background:#fff;color:#111}
@@ -46,7 +161,7 @@
     <div class="row"><div><label for="idInput">ID</label><input id="idInput"></div><button id="makeId" type="button">Vytvořit z názvu</button></div>
     <div class="field" id="textField"><label for="textInput">Popis</label><textarea id="textInput"></textarea></div>
     <div class="field" id="imageField"><label for="imageInput">Cesta k fotce</label><input id="imageInput"></div>
-    <div class="field" id="iconField" hidden><label for="iconInput">Typ bodu na hlavní mapě</label><select id="iconInput"><option value="">Kolečko</option><option value="arrow-right">Trojúhelník doprava</option></select></div>
+    <div class="field" id="iconField" hidden><label for="iconInput">Typ bodu na hlavní mapě</label><select id="iconInput"><option value="">Kolečko</option><option value="arrow-right">Trojúhelník doprava</option><option value="arrow-left">Trojúhelník doleva</option><option value="arrow-down">Trojúhelník dolů</option></select></div>
     <div class="actions"><button id="applyChanges">Použít změny</button><button id="copyJson" class="secondary">Kopírovat JSON</button><button id="downloadJson">Stáhnout JSON</button><a href="index.html" class="secondary">Zpět na web</a></div>
     <textarea class="output" id="output" spellcheck="false"></textarea>
     <div class="help" id="helpText"></div>
@@ -72,7 +187,7 @@
   function updateOutput(){const a=activeItem(); if(a){coordsEl.textContent=`${a.title||a.id}\nx: ${fmt(a.x)}\ny: ${fmt(a.y)}`;titleInput.value=a.title||'';idInput.value=a.id||'';textInput.value=a.text||'';imageInput.value=a.image||'';iconInput.value=a.icon||''}else{coordsEl.textContent='Žádný bod.';titleInput.value=idInput.value=textInput.value=imageInput.value='';iconInput.value=''} outputEl.value=JSON.stringify(serialise(),null,2);document.querySelectorAll('.point').forEach(p=>p.classList.toggle('active',p.dataset.id===activeId));document.querySelectorAll('.list button').forEach(b=>b.classList.toggle('active',b.dataset.id===activeId))}
   function setActive(id){activeId=id;updateOutput()}
   function moveItem(id,cx,cy){const rect=stage.getBoundingClientRect(),x=clamp(((cx-rect.left)/rect.width)*100,0,100),y=clamp(((cy-rect.top)/rect.height)*100,0,100),item=items.find(i=>i.id===id);if(!item)return;item.x=Number(fmt(x));item.y=Number(fmt(y));const p=document.querySelector(`.point[data-id="${CSS.escape(id)}"]`);if(p){p.style.setProperty('--x',item.x+'%');p.style.setProperty('--y',item.y+'%')}updateOutput()}
-  function render(){pointsEl.innerHTML='';listEl.innerHTML='';items.forEach(item=>{const p=document.createElement('button');p.className='point'+(cfg().mode==='map'&&item.icon==='arrow-right'?' map-arrow':'');p.type='button';p.dataset.id=item.id;p.style.setProperty('--x',item.x+'%');p.style.setProperty('--y',item.y+'%');const l=document.createElement('span');l.className='label';l.textContent=item.title||item.id;p.appendChild(l);p.addEventListener('pointerdown',e=>{e.preventDefault();draggingId=item.id;p.setPointerCapture(e.pointerId);setActive(item.id);moveItem(item.id,e.clientX,e.clientY)});p.addEventListener('pointermove',e=>{if(draggingId===item.id)moveItem(item.id,e.clientX,e.clientY)});p.addEventListener('pointerup',()=>draggingId=null);pointsEl.appendChild(p);const row=document.createElement('button');row.type='button';row.dataset.id=item.id;row.textContent=item.title||item.id;row.onclick=()=>setActive(item.id);listEl.appendChild(row)});setActive(items.some(i=>i.id===activeId)?activeId:(items[0]?.id||null))}
+  function render(){pointsEl.innerHTML='';listEl.innerHTML='';items.forEach(item=>{const p=document.createElement('button');p.className='point';if(cfg().mode==='map'){if(item.icon==='arrow-right')p.classList.add('map-arrow-right');if(item.icon==='arrow-left')p.classList.add('map-arrow-left');if(item.icon==='arrow-down')p.classList.add('map-arrow-down');}p.type='button';p.dataset.id=item.id;p.style.setProperty('--x',item.x+'%');p.style.setProperty('--y',item.y+'%');const l=document.createElement('span');l.className='label';l.textContent=item.title||item.id;p.appendChild(l);p.addEventListener('pointerdown',e=>{e.preventDefault();draggingId=item.id;p.setPointerCapture(e.pointerId);setActive(item.id);moveItem(item.id,e.clientX,e.clientY)});p.addEventListener('pointermove',e=>{if(draggingId===item.id)moveItem(item.id,e.clientX,e.clientY)});p.addEventListener('pointerup',()=>draggingId=null);pointsEl.appendChild(p);const row=document.createElement('button');row.type='button';row.dataset.id=item.id;row.textContent=item.title||item.id;row.onclick=()=>setActive(item.id);listEl.appendChild(row)});setActive(items.some(i=>i.id===activeId)?activeId:(items[0]?.id||null))}
   async function loadPlace(key){currentKey=key;activeId=null;const c=cfg();stageImage.src=c.image;stageImage.alt=c.title;textField.hidden=imageField.hidden=c.mode==='map';iconField.hidden=c.mode!=='map';helpText.textContent=c.mode==='map'?`Staženým souborem nahraď ${c.data}. Body hlavní mapy otevírají sekce podle ID.`:`Staženým souborem nahraď ${c.data}. Pokud soubor zatím neexistuje, vlož stažený JSON do složky data.`;try{const r=await fetch(c.data+'?t='+Date.now());items=r.ok?await r.json():[]}catch{items=[]}render()}
   function apply(){const a=activeItem();if(!a)return;const old=a.id;a.title=titleInput.value.trim()||'Nový bod';a.id=uniqueId(idInput.value.trim()||a.title,old);if(cfg().mode==='map')a.icon=iconInput.value;else{a.text=textInput.value.trim();a.image=imageInput.value.trim()}activeId=a.id;render()}
   $('addHotspot').onclick=()=>{const n=items.length+1,id=uniqueId('novy-bod-'+n);const item=cfg().mode==='map'?{id,title:'Nové místo',x:50,y:50}:{id,title:'Nový hotspot',text:'',image:`images/${currentKey}/hotspots/${id}.jpg`,x:50,y:50};items.push(item);activeId=id;render()};

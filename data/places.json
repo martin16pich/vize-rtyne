@@ -35,5 +35,19 @@
     "title": "Odpadová místa",
     "x": 56.49,
     "y": 65.15
+  },
+  {
+    "id": "rtynsky-trail",
+    "title": "Rtyňský trail",
+    "x": 61.42,
+    "y": 96.05,
+    "icon": "arrow-down"
+  },
+  {
+    "id": "bezecke-trasy-palenka",
+    "title": "Běžecké trasy Pálenka",
+    "x": 8.04,
+    "y": 85.84,
+    "icon": "arrow-left"
   }
 ]
