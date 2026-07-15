@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "multifuncni-hriste",
+    "title": "Multifunční hřiště",
+    "text": "Dva multifunkční kurty pro tenis, volejbal, nohejbal a další sporty. Po spojení kurtů bude možné hrát malou kopanou. Využití po celý rok.",
+    "image": "images/centrum/hotspots/kurty.jpg",
+    "x": 38.45,
+    "y": 72.89
+  },
+  {
+    "id": "zazemi-pro-sportovce",
+    "title": "Zázemí pro sportovce",
+    "text": "Sportovní kabiny, prostor pro krátkodobé ubytování sportovců.",
+    "image": "images/centrum/hotspots/kabina.jpg",
+    "x": 29.53,
+    "y": 50.49
+  },
+  {
+    "id": "vnitrni-sportoviste",
+    "title": "Vnitřní sportoviště",
+    "text": "Vnitřní kurty pro squash, ricochet a badminton. Městská sauna.",
+    "image": "images/centrum/hotspots/squash.jpg",
+    "x": 38.38,
+    "y": 46.98
+  },
+  {
+    "id": "obcerstveni",
+    "title": "Občerstvení",
+    "text": "Prostor pro restaurační zařízení a občerstvení u parku a sportoviště.",
+    "image": "images/centrum/hotspots/obcerstveni.jpg",
+    "x": 43.51,
+    "y": 52.36
+  },
+  {
+    "id": "plazovy-volejbal",
+    "title": "Plážový volejbal",
+    "text": "Hřiště pro plážový volejbal.",
+    "image": "images/centrum/hotspots/beach.jpg",
+    "x": 46.08,
+    "y": 62.46
+  },
+  {
+    "id": "dopravni-hriste",
+    "title": "Dopravní hřiště",
+    "text": "Dopravní hřiště pro děti.",
+    "image": "images/centrum/hotspots/detske_dopravni_hriste.jpg",
+    "x": 65.27,
+    "y": 75.08
+  },
+  {
+    "id": "pumptrack",
+    "title": "Pumptrack",
+    "text": "Okruh pro jízdu na kole, koloběžce, skateboardu či inline bruslích v terénních nerovnostech pro všechny věkové kategorie.",
+    "image": "images/centrum/hotspots/pumptrack.jpg",
+    "x": 85.95,
+    "y": 75.08
+  },
+  {
+    "id": "prijezd-ke-skolce",
+    "title": "Příjezd ke školce",
+    "text": "Příjezdová komunikace k mateřské škole, včetně kapacitního parkoviště a chodníků.",
+    "image": "images/centrum/hotspots/parkoviste.jpg",
+    "x": 13.72,
+    "y": 78.49
+  },
+  {
+    "id": "mestsky-park",
+    "title": "Městský park",
+    "text": "Městský park ve kterém bude umístěna lezecká stěna (boulder)",
+    "image": "images/centrum/hotspots/boulder.jpg",
+    "x": 46.49,
+    "y": 39.08
+  },
+  {
+    "id": "vodni-prvek",
+    "title": "Vodní prvek",
+    "text": "Fontána sloužící pro letní osvěžení.",
+    "image": "images/centrum/hotspots/vodni_prvek.jpg",
+    "x": 51.01,
+    "y": 47.09
+  },
+  {
+    "id": "petanque-hriste",
+    "title": "Petanque hřiště",
+    "text": "Hřiště pro aktivní odpočinek.",
+    "image": "images/centrum/hotspots/petanque.jpg",
+    "x": 51.82,
+    "y": 55.54
+  },
+  {
+    "id": "inline-draha",
+    "title": "Inline dráha",
+    "text": "Stezka pro jízdu na kolečkových bruslích, běh, jízdu na kole. Stezka bude kolem celého areálu a bude mít vyznačené úseky pro porovnávání sportovců.",
+    "image": "images/centrum/hotspots/inline.jpg",
+    "x": 54.26,
+    "y": 77.72
+  }
+]
