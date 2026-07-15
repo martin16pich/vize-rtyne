@@ -767,12 +767,11 @@ pointer-events:auto}
     width:2px;
   }
 
- .handle{
-    width:42px;
-    height:42px;
-    font-size:20px;
-    top:75%;
-}
+  .handle{
+    width:42px !important;
+    height:42px !important;
+    font-size:20px !important;
+  }
 
   .city-title{
     top:18px !important;
