@@ -1987,3 +1987,64 @@ pointer-events:auto}
     text-align:center !important;
   }
 }
+
+/* =========================================================
+   Mobilní otevírání hotspotů — přehledná informační karta
+   ========================================================= */
+@media (max-width:820px){
+  .info-card{
+    position:fixed !important;
+    z-index:600 !important;
+    left:12px !important;
+    right:12px !important;
+    top:auto !important;
+    bottom:calc(12px + env(safe-area-inset-bottom)) !important;
+    width:auto !important;
+    max-height:min(68svh, 560px) !important;
+    overflow-x:hidden !important;
+    overflow-y:auto !important;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+    border-radius:22px !important;
+    box-shadow:0 24px 70px rgba(0,0,0,.42) !important;
+  }
+
+  .info-card img{
+    width:100% !important;
+    height:clamp(120px, 24svh, 180px) !important;
+    object-fit:cover !important;
+  }
+
+  .info-card .card-body{
+    padding:16px 18px 20px !important;
+  }
+
+  .info-card .card-body h2{
+    margin:0 0 8px !important;
+    font-size:26px !important;
+    line-height:1.08 !important;
+  }
+
+  .info-card .card-body p{
+    margin:0 !important;
+    font-size:17px !important;
+    line-height:1.42 !important;
+  }
+
+  .info-card .card-close{
+    position:sticky !important;
+    top:10px !important;
+    z-index:3 !important;
+    float:right;
+    margin:10px 10px -46px 0;
+    width:42px !important;
+    height:42px !important;
+    font-size:28px !important;
+  }
+
+  /* Po otevření karty už velký popisek u bodu nezakrývá fotografii. */
+  .hotspot.active .hotspot-tooltip{
+    opacity:0 !important;
+    visibility:hidden !important;
+  }
+}
