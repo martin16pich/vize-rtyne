@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "id": "obnova-trati",
+    "title": "Obnova tratí",
+    "text": "Obnova běžeckých tratí a jejich značení.",
+    "image": "images/palenka/hotspots/beh.jpg",
+    "x": 54.18,
+    "y": 84.41
+  }
+]
