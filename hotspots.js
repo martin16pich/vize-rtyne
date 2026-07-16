@@ -213,11 +213,23 @@
       const hasImage = Boolean(item.image);
 
       cardImage.hidden = !hasImage;
+      cardImage.loading = 'lazy';
+      cardImage.decoding = 'async';
 
       if (hasImage) {
-        cardImage.src = item.image;
+        const originalImage = item.image;
+        const mobileImage = originalImage.replace(/\.[^./]+$/, '-mobile.webp');
+        const preferredImage = isMobile() ? mobileImage : originalImage;
+
+        cardImage.onerror = () => {
+          cardImage.onerror = null;
+          cardImage.src = originalImage;
+        };
+
+        cardImage.src = preferredImage;
         cardImage.alt = item.title || '';
       } else {
+        cardImage.onerror = null;
         cardImage.removeAttribute('src');
         cardImage.alt = '';
       }
