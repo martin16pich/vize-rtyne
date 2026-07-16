@@ -92,7 +92,7 @@ body.is-locked > *:not(#passwordGate){
 
   <main>
     <section id="uvod" class="city-map page" aria-label="Mapa Rtyně">
-      <img class="city-map-img" src="images/mapa/rtyne-letecky.jpg" alt="Letecký pohled na Rtyni" />
+      <picture><source media="(max-width: 820px)" srcset="images/mapa/rtyne-letecky-mobile.webp" type="image/webp" /><img class="city-map-img" src="images/mapa/rtyne-letecky.jpg" alt="Letecký pohled na Rtyni" fetchpriority="high" decoding="async" /></picture>
 
       <div class="city-title">
         <h1>Vize Rtyně</h1>
@@ -103,9 +103,9 @@ body.is-locked > *:not(#passwordGate){
     </section>
 
     <section id="zabarna" class="compare page" aria-label="Žabárna">
-      <img class="compare-img compare-future" src="images/zabarna/vize.jpg" alt="Vize budoucnosti rybníka Žabárna" />
+      <picture><source media="(max-width: 820px)" srcset="images/zabarna/vize-mobile.webp" type="image/webp" /><img class="compare-img compare-future" src="images/zabarna/vize.jpg" alt="Vize budoucnosti rybníka Žabárna" loading="lazy" decoding="async" /></picture>
       <div class="compare-before">
-        <img class="compare-img compare-current" src="images/zabarna/soucasnost.jpg" alt="Současný stav rybníka Žabárna" />
+        <picture><source media="(max-width: 820px)" srcset="images/zabarna/soucasnost-mobile.webp" type="image/webp" /><img class="compare-img compare-current" src="images/zabarna/soucasnost.jpg" alt="Současný stav rybníka Žabárna" loading="lazy" decoding="async" /></picture>
       </div>
       <input class="compare-range" type="range" min="0" max="100" value="50" aria-label="Porovnání současnosti a vize Žabárny" />
       <div class="compare-line" aria-hidden="true"><span class="handle">↔</span></div>
@@ -123,8 +123,8 @@ body.is-locked > *:not(#passwordGate){
     </section>
 
     <section id="kampelicka" class="compare page" aria-label="Park před Kampeličkou">
-      <img class="compare-img compare-future" src="images/kampelicka/vize.jpg" alt="Vize Parku před Kampeličkou" />
-      <div class="compare-before"><img class="compare-img compare-current" src="images/kampelicka/soucasnost.jpg" alt="Současný stav Parku před Kampeličkou" /></div>
+      <picture><source media="(max-width: 820px)" srcset="images/kampelicka/vize-mobile.webp" type="image/webp" /><img class="compare-img compare-future" src="images/kampelicka/vize.jpg" alt="Vize Parku před Kampeličkou" loading="lazy" decoding="async" /></picture>
+      <div class="compare-before"><picture><source media="(max-width: 820px)" srcset="images/kampelicka/soucasnost-mobile.webp" type="image/webp" /><img class="compare-img compare-current" src="images/kampelicka/soucasnost.jpg" alt="Současný stav Parku před Kampeličkou" loading="lazy" decoding="async" /></picture></div>
       <input class="compare-range" type="range" min="0" max="100" value="50" aria-label="Porovnání Parku před Kampeličkou" />
       <div class="compare-line" aria-hidden="true"><span class="handle">↔</span></div>
       <div class="title-card"><h1>Park před Kampeličkou</h1></div>
@@ -141,8 +141,8 @@ body.is-locked > *:not(#passwordGate){
     </section>
 
     <section id="hornicka" class="compare page empty-future" aria-label="Hornická ulice">
-      <img class="compare-img compare-future" src="images/hornicka/vize.jpg" alt="Prázdná vize Hornické ulice" />
-      <div class="compare-before"><img class="compare-img compare-current" src="images/hornicka/soucasnost.jpg" alt="Současný stav Hornické ulice" /></div>
+      <picture><source media="(max-width: 820px)" srcset="images/hornicka/vize-mobile.webp" type="image/webp" /><img class="compare-img compare-future" src="images/hornicka/vize.jpg" alt="Prázdná vize Hornické ulice" loading="lazy" decoding="async" /></picture>
+      <div class="compare-before"><picture><source media="(max-width: 820px)" srcset="images/hornicka/soucasnost-mobile.webp" type="image/webp" /><img class="compare-img compare-current" src="images/hornicka/soucasnost.jpg" alt="Současný stav Hornické ulice" loading="lazy" decoding="async" /></picture></div>
       <input class="compare-range" type="range" min="0" max="100" value="50" aria-label="Porovnání Hornické ulice" />
       <div class="compare-line" aria-hidden="true"><span class="handle">↔</span></div>
       <div class="title-card"><h1>Hornická ulice</h1></div>
@@ -150,8 +150,8 @@ body.is-locked > *:not(#passwordGate){
     </section>
 
     <section id="namesti" class="compare page empty-future" aria-label="Náměstí">
-      <img class="compare-img compare-future" src="images/namesti/vize.jpg" alt="Prázdná vize náměstí" />
-      <div class="compare-before"><img class="compare-img compare-current" src="images/namesti/soucasnost.jpg" alt="Současný stav náměstí" /></div>
+      <picture><source media="(max-width: 820px)" srcset="images/namesti/vize-mobile.webp" type="image/webp" /><img class="compare-img compare-future" src="images/namesti/vize.jpg" alt="Prázdná vize náměstí" loading="lazy" decoding="async" /></picture>
+      <div class="compare-before"><picture><source media="(max-width: 820px)" srcset="images/namesti/soucasnost-mobile.webp" type="image/webp" /><img class="compare-img compare-current" src="images/namesti/soucasnost.jpg" alt="Současný stav náměstí" loading="lazy" decoding="async" /></picture></div>
       <input class="compare-range" type="range" min="0" max="100" value="50" aria-label="Porovnání náměstí" />
       <div class="compare-line" aria-hidden="true"><span class="handle">↔</span></div>
       <div class="title-card"><h1>Náměstí</h1></div>
@@ -159,8 +159,8 @@ body.is-locked > *:not(#passwordGate){
     </section>
 
     <section id="centrum" class="compare page empty-future" aria-label="Centrum města">
-      <img class="compare-img compare-future" src="images/centrum/vize.jpg" alt="Prázdná vize centra města" />
-      <div class="compare-before"><img class="compare-img compare-current" src="images/centrum/soucasnost.jpg" alt="Současný stav centra města" /></div>
+      <picture><source media="(max-width: 820px)" srcset="images/centrum/vize-mobile.webp" type="image/webp" /><img class="compare-img compare-future" src="images/centrum/vize.jpg" alt="Prázdná vize centra města" loading="lazy" decoding="async" /></picture>
+      <div class="compare-before"><picture><source media="(max-width: 820px)" srcset="images/centrum/soucasnost-mobile.webp" type="image/webp" /><img class="compare-img compare-current" src="images/centrum/soucasnost.jpg" alt="Současný stav centra města" loading="lazy" decoding="async" /></picture></div>
       <input class="compare-range" type="range" min="0" max="100" value="50" aria-label="Porovnání centra města" />
       <div class="compare-line" aria-hidden="true"><span class="handle">↔</span></div>
       <div class="title-card"><h1>Centrum města</h1></div>
@@ -168,8 +168,8 @@ body.is-locked > *:not(#passwordGate){
     </section>
 
     <section id="odpady" class="compare page" aria-label="Odpadová místa">
-      <img class="compare-img compare-future" src="images/odpady/vize.jpg" alt="Vize odpadových míst" />
-      <div class="compare-before"><img class="compare-img compare-current" src="images/odpady/soucasnost.jpg" alt="Současný stav odpadového místa" /></div>
+      <picture><source media="(max-width: 820px)" srcset="images/odpady/vize-mobile.webp" type="image/webp" /><img class="compare-img compare-future" src="images/odpady/vize.jpg" alt="Vize odpadových míst" loading="lazy" decoding="async" /></picture>
+      <div class="compare-before"><picture><source media="(max-width: 820px)" srcset="images/odpady/soucasnost-mobile.webp" type="image/webp" /><img class="compare-img compare-current" src="images/odpady/soucasnost.jpg" alt="Současný stav odpadového místa" loading="lazy" decoding="async" /></picture></div>
       <input class="compare-range" type="range" min="0" max="100" value="50" aria-label="Porovnání odpadových míst" />
       <div class="compare-line" aria-hidden="true"><span class="handle">↔</span></div>
       <div class="title-card"><h1>Odpadová místa</h1></div>
@@ -177,8 +177,8 @@ body.is-locked > *:not(#passwordGate){
     </section>
 
     <section id="rtynsky-trail" class="compare page empty-future" aria-label="Rtyňský trail">
-      <img class="compare-img compare-future" src="images/rtynsky-trail/vize.jpg" alt="Budoucí vize Rtyňského trailu" />
-      <div class="compare-before"><img class="compare-img compare-current" src="images/rtynsky-trail/soucasnost.jpg" alt="Současný stav Rtyňského trailu" /></div>
+      <picture><source media="(max-width: 820px)" srcset="images/rtynsky-trail/vize-mobile.webp" type="image/webp" /><img class="compare-img compare-future" src="images/rtynsky-trail/vize.jpg" alt="Budoucí vize Rtyňského trailu" loading="lazy" decoding="async" /></picture>
+      <div class="compare-before"><picture><source media="(max-width: 820px)" srcset="images/rtynsky-trail/soucasnost-mobile.webp" type="image/webp" /><img class="compare-img compare-current" src="images/rtynsky-trail/soucasnost.jpg" alt="Současný stav Rtyňského trailu" loading="lazy" decoding="async" /></picture></div>
       <input class="compare-range" type="range" min="0" max="100" value="50" aria-label="Porovnání současnosti a vize Rtyňského trailu" />
       <div class="compare-line" aria-hidden="true"><span class="handle">↔</span></div>
       <div class="title-card"><h1>Rtyňský trail</h1></div>
@@ -192,8 +192,8 @@ body.is-locked > *:not(#passwordGate){
     </section>
 
     <section id="bezecke-trasy-palenka" class="compare page empty-future" aria-label="Běžecké trasy Pálenka">
-      <img class="compare-img compare-future" src="images/palenka/vize.jpg" alt="Budoucí vize běžeckých tras Pálenka" />
-      <div class="compare-before"><img class="compare-img compare-current" src="images/palenka/soucasnost.jpg" alt="Současný stav běžeckých tras Pálenka" /></div>
+      <picture><source media="(max-width: 820px)" srcset="images/palenka/vize-mobile.webp" type="image/webp" /><img class="compare-img compare-future" src="images/palenka/vize.jpg" alt="Budoucí vize běžeckých tras Pálenka" loading="lazy" decoding="async" /></picture>
+      <div class="compare-before"><picture><source media="(max-width: 820px)" srcset="images/palenka/soucasnost-mobile.webp" type="image/webp" /><img class="compare-img compare-current" src="images/palenka/soucasnost.jpg" alt="Současný stav běžeckých tras Pálenka" loading="lazy" decoding="async" /></picture></div>
       <input class="compare-range" type="range" min="0" max="100" value="50" aria-label="Porovnání současnosti a vize běžeckých tras Pálenka" />
       <div class="compare-line" aria-hidden="true"><span class="handle">↔</span></div>
       <div class="title-card"><h1>Běžecké trasy Pálenka</h1></div>
