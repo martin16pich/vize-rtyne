@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "id": "oploceni-kontejneru",
+    "title": "Oplocení kontejnerů",
+    "text": "Oplocení kontejnerových hnízd z dřevěných latí. Oplocení doplněné o posuvné branky.",
+    "image": "images/odpady/hotspots/odpady.jpg",
+    "x": 70.54,
+    "y": 61.8
+  }
+]
