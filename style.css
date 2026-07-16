@@ -2048,3 +2048,139 @@ pointer-events:auto}
     visibility:hidden !important;
   }
 }
+
+/* =========================================================
+   Mobilní hotspot jako skutečné modální okno nad celým webem
+   ========================================================= */
+.hotspot-modal-backdrop{
+  position:fixed;
+  inset:0;
+  z-index:2147482000;
+  background:rgba(5,10,7,.62);
+  backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
+}
+
+.hotspot-modal-backdrop[hidden]{
+  display:none !important;
+}
+
+body.hotspot-modal-open{
+  overflow:hidden !important;
+  touch-action:none;
+}
+
+@media (max-width:820px){
+  .info-card.hotspot-modal-card{
+    position:fixed !important;
+    z-index:2147483000 !important;
+    left:50% !important;
+    right:auto !important;
+    top:50% !important;
+    bottom:auto !important;
+    width:min(760px, calc(100vw - 24px)) !important;
+    max-height:calc(100svh - 32px - env(safe-area-inset-top) - env(safe-area-inset-bottom)) !important;
+    margin:0 !important;
+    transform:translate(-50%, -50%) !important;
+    overflow-x:hidden !important;
+    overflow-y:auto !important;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+    border-radius:24px !important;
+    box-shadow:0 30px 100px rgba(0,0,0,.58) !important;
+    isolation:isolate;
+  }
+
+  .info-card.hotspot-modal-card img{
+    width:100% !important;
+    height:clamp(140px, 28svh, 230px) !important;
+    object-fit:cover !important;
+  }
+
+  .info-card.hotspot-modal-card .card-body{
+    padding:18px 20px 24px !important;
+  }
+
+  .info-card.hotspot-modal-card .card-body h2{
+    margin:0 0 10px !important;
+    font-size:clamp(28px, 8vw, 40px) !important;
+    line-height:1.04 !important;
+  }
+
+  .info-card.hotspot-modal-card .card-body p{
+    margin:0 !important;
+    font-size:clamp(17px, 4.6vw, 22px) !important;
+    line-height:1.42 !important;
+  }
+
+  .info-card.hotspot-modal-card .card-close{
+    position:sticky !important;
+    top:10px !important;
+    z-index:10 !important;
+    float:right;
+    margin:10px 10px -54px 0 !important;
+    width:46px !important;
+    height:46px !important;
+    display:grid !important;
+    place-items:center !important;
+    border:2px solid rgba(255,255,255,.72) !important;
+    border-radius:50% !important;
+    background:rgba(0,0,0,.78) !important;
+    color:#fff !important;
+    font-size:30px !important;
+    line-height:1 !important;
+    box-shadow:0 8px 24px rgba(0,0,0,.32) !important;
+  }
+
+  .hotspot.active .hotspot-tooltip{
+    opacity:0 !important;
+    visibility:hidden !important;
+  }
+}
+
+/* O PROJEKTU — hlavní nadpis přesně na středu stránky */
+.about-project__masthead{
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:170px;
+  margin-bottom:28px;
+}
+
+.about-project__logo{
+  position:absolute;
+  left:0;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+.about-project__header{
+  width:100%;
+  padding:0 190px;
+  text-align:center;
+}
+
+.about-project__header h1{
+  text-align:center;
+}
+
+@media (max-width:820px){
+  .about-project__masthead{
+    min-height:0;
+    flex-direction:column;
+    gap:12px;
+    margin:28px 0 24px;
+  }
+
+  .about-project__logo{
+    position:static;
+    transform:none;
+    margin:0 auto;
+  }
+
+  .about-project__header{
+    padding:0;
+    text-align:center;
+  }
+}

@@ -42,9 +42,19 @@
     }
   });
 
+  /*
+    Překryv je společný pro všechny hotspoty.
+    Záměrně nemá obsluhu kliknutí – kartu lze zavřít pouze křížkem.
+  */
+  const modalBackdrop = document.createElement('div');
+  modalBackdrop.className = 'hotspot-modal-backdrop';
+  modalBackdrop.hidden = true;
+  modalBackdrop.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(modalBackdrop);
+
   const hotspotContainers = Array.from(document.querySelectorAll('.hotspots'));
-  let globallyOpenCard = null;
-  let globallyCloseCard = null;
+
+  let globallyOpen = null;
 
   hotspotContainers.forEach((hotspotsEl) => {
     const container = hotspotsEl.closest('.compare');
@@ -62,7 +72,8 @@
 
     let activeButton = null;
     let comparePercent = Number(slider.value || 50);
-    let openedAtScrollY = 0;
+    let modalOriginalParent = null;
+    let modalOriginalNextSibling = null;
 
     card.setAttribute('role', 'dialog');
     card.setAttribute('aria-modal', 'false');
@@ -127,16 +138,34 @@
           hasFutureVisible && button.offsetLeft > sliderX + 10;
 
         button.classList.toggle('future-visible', isVisible);
-
-        if (!isVisible && activeButton === button) {
-          closeCard();
-        }
       });
+    }
+
+    function restoreCardToSection() {
+      if (!modalOriginalParent) return;
+
+      if (
+        modalOriginalNextSibling &&
+        modalOriginalNextSibling.parentNode === modalOriginalParent
+      ) {
+        modalOriginalParent.insertBefore(card, modalOriginalNextSibling);
+      } else {
+        modalOriginalParent.appendChild(card);
+      }
+
+      modalOriginalParent = null;
+      modalOriginalNextSibling = null;
     }
 
     function closeCard() {
       card.hidden = true;
-      card.classList.remove('is-open');
+      card.classList.remove('is-open', 'hotspot-modal-card');
+      card.setAttribute('aria-modal', 'false');
+
+      card.style.removeProperty('left');
+      card.style.removeProperty('top');
+
+      restoreCardToSection();
 
       if (activeButton) {
         activeButton.classList.remove('active');
@@ -145,29 +174,34 @@
 
       activeButton = null;
 
-      if (globallyOpenCard === card) {
-        globallyOpenCard = null;
-        globallyCloseCard = null;
+      if (globallyOpen?.card === card) {
+        globallyOpen = null;
+        modalBackdrop.hidden = true;
+        document.body.classList.remove('hotspot-modal-open');
       }
     }
 
-    function closeOtherCard() {
-      if (globallyOpenCard && globallyOpenCard !== card && globallyCloseCard) {
-        globallyCloseCard();
+    function closePreviouslyOpenCard() {
+      if (globallyOpen && globallyOpen.card !== card) {
+        globallyOpen.close();
       }
     }
 
     function openCard(item, button) {
       if (!button.classList.contains('future-visible')) return;
 
-      if (activeButton === button && !card.hidden) {
-        closeCard();
+      /*
+        Opakované klepnutí na stejný aktivní hotspot nic nezavírá.
+        Karta se zavírá výhradně křížkem, případně automaticky při
+        otevření jiného hotspotu.
+      */
+      if (globallyOpen?.card === card && activeButton === button && !card.hidden) {
         return;
       }
 
-      closeOtherCard();
+      closePreviouslyOpenCard();
 
-      if (activeButton) {
+      if (activeButton && activeButton !== button) {
         activeButton.classList.remove('active');
         activeButton.setAttribute('aria-expanded', 'false');
       }
@@ -194,43 +228,65 @@
       card.hidden = false;
       card.classList.add('is-open');
 
-      globallyOpenCard = card;
-      globallyCloseCard = closeCard;
-      openedAtScrollY = window.scrollY;
+      globallyOpen = {
+        card,
+        button,
+        close: closeCard
+      };
 
-      if (!isMobile()) {
-        const containerRect = container.getBoundingClientRect();
-        const buttonRect = button.getBoundingClientRect();
-        const cardWidth = Math.min(360, containerRect.width - 32);
-
-        const left = Math.max(
-          16,
-          Math.min(
-            containerRect.width - cardWidth - 16,
-            buttonRect.left - containerRect.left - cardWidth / 2
-          )
-        );
-
-        let top = buttonRect.top - containerRect.top - 270;
-
-        if (top < 110) {
-          top = buttonRect.top - containerRect.top + 42;
+      if (isMobile()) {
+        /*
+          Kartu přesuneme přímo pod body, aby ji neomezoval stacking context
+          jednotlivé fotografie. Díky tomu je opravdu nad celým webem.
+        */
+        if (card.parentNode !== document.body) {
+          modalOriginalParent = card.parentNode;
+          modalOriginalNextSibling = card.nextSibling;
+          document.body.appendChild(card);
         }
 
-        if (top + 340 > containerRect.height) {
-          top = containerRect.height - 350;
-        }
+        card.classList.add('hotspot-modal-card');
+        card.setAttribute('aria-modal', 'true');
 
-        card.style.left = `${left}px`;
-        card.style.top = `${Math.max(96, top)}px`;
-      } else {
-        card.style.removeProperty('left');
-        card.style.removeProperty('top');
+        modalBackdrop.hidden = false;
+        document.body.classList.add('hotspot-modal-open');
 
         requestAnimationFrame(() => {
           card.focus({ preventScroll: true });
         });
+
+        return;
       }
+
+      /*
+        Na desktopu zůstává karta umístěná u vybraného bodu.
+        I zde však zůstává otevřená, dokud uživatel nepoužije křížek
+        nebo neotevře jiný hotspot.
+      */
+      const containerRect = container.getBoundingClientRect();
+      const buttonRect = button.getBoundingClientRect();
+      const cardWidth = Math.min(360, containerRect.width - 32);
+
+      const left = Math.max(
+        16,
+        Math.min(
+          containerRect.width - cardWidth - 16,
+          buttonRect.left - containerRect.left - cardWidth / 2
+        )
+      );
+
+      let top = buttonRect.top - containerRect.top - 270;
+
+      if (top < 110) {
+        top = buttonRect.top - containerRect.top + 42;
+      }
+
+      if (top + 340 > containerRect.height) {
+        top = containerRect.height - 350;
+      }
+
+      card.style.left = `${left}px`;
+      card.style.top = `${Math.max(96, top)}px`;
     }
 
     function renderHotspots(items) {
@@ -283,37 +339,12 @@
     image.addEventListener('load', positionHotspots);
     window.addEventListener('resize', positionHotspots);
 
+    /*
+      Jediný způsob ručního zavření karty.
+    */
     cardClose?.addEventListener('click', (event) => {
       event.preventDefault();
       event.stopPropagation();
-      closeCard();
-    });
-
-    /*
-      Na mobilu se karta zavře po začátku rolování.
-      Nebude tedy viset přes následující lokalitu nebo sekci O projektu.
-    */
-    window.addEventListener(
-      'scroll',
-      () => {
-        if (
-          !card.hidden &&
-          isMobile() &&
-          Math.abs(window.scrollY - openedAtScrollY) > 18
-        ) {
-          closeCard();
-        }
-      },
-      { passive: true }
-    );
-
-    window.addEventListener('hashchange', closeCard);
-
-    document.addEventListener('pointerdown', (event) => {
-      if (card.hidden) return;
-      if (card.contains(event.target)) return;
-      if (event.target.closest('.hotspot')) return;
-
       closeCard();
     });
   });
