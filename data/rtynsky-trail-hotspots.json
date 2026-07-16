@@ -1,1 +1,26 @@
-[]
+[
+  {
+    "id": "skoky-a-dropy",
+    "title": "Skoky a dropy",
+    "text": "Úprava terénu a vytvoření terénních skoků.",
+    "image": "images/rtynsky-trail/hotspots/skoky.jpg",
+    "x": 77.23,
+    "y": 56.42
+  },
+  {
+    "id": "zakladni-trasa",
+    "title": "Základní trasa",
+    "text": "Snadná trať pro začátečníky.",
+    "image": "images/rtynsky-trail/hotspots/zaklad.jpg",
+    "x": 46.17,
+    "y": 63.56
+  },
+  {
+    "id": "technicka-trasa",
+    "title": "Technická trasa",
+    "text": "Obtížnější trať s klopenou zatáčkou.",
+    "image": "images/rtynsky-trail/hotspots/klopenka.jpg",
+    "x": 33.91,
+    "y": 50.05
+  }
+]
