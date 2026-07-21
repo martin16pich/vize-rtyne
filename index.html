@@ -70,11 +70,38 @@ const SETTINGS={
   }
 };
 document.addEventListener('DOMContentLoaded',()=>{
- const main=document.querySelector('main');
- const about=document.getElementById('o-projektu');
- const sections=[...main.querySelectorAll('section.compare')];
- sections.sort((a,b)=>(SETTINGS.sectionOrder[a.id]??999)-(SETTINGS.sectionOrder[b.id]??999));
- sections.forEach(s=>main.insertBefore(s,about));
+  const order = SETTINGS.sectionOrder;
+
+  // Seřazení jednotlivých vizí pod hlavní mapou.
+  const main = document.querySelector('main');
+  const about = document.getElementById('o-projektu');
+  const sections = [...main.querySelectorAll('section.compare')];
+
+  sections.sort((a,b)=>
+    (order[a.id] ?? 999) - (order[b.id] ?? 999)
+  );
+
+  sections.forEach(section=>{
+    main.insertBefore(section, about);
+  });
+
+  // Stejné pořadí také v rozbalovacím menu „Místa“.
+  const menu = document.querySelector('.dropdown-menu');
+
+  if(menu){
+    const links = [...menu.querySelectorAll('a[href^="#"]')];
+
+    links.sort((a,b)=>{
+      const aId = a.getAttribute('href').slice(1);
+      const bId = b.getAttribute('href').slice(1);
+
+      return (order[aId] ?? 999) - (order[bId] ?? 999);
+    });
+
+    links.forEach(link=>{
+      menu.appendChild(link);
+    });
+  }
 });
 </script>
 
