@@ -51,61 +51,7 @@ body.is-locked > *:not(#passwordGate){
 </style>
 </head>
 <body>
-
-<script>
-/* ===========================================================
-   NASTAVENÍ WEBU
-   Změň pouze čísla v sectionOrder.
-   =========================================================== */
-const SETTINGS={
-  sectionOrder:{
-    centrum:1,
-    hornicka:2,
-    zabarna:3,
-    namesti:4,
-    kampelicka:5,
-    odpady:6,
-    "rtynsky-trail":7,
-    "bezecke-trasy-palenka":8
-  }
-};
-document.addEventListener('DOMContentLoaded',()=>{
-  const order = SETTINGS.sectionOrder;
-
-  // Seřazení jednotlivých vizí pod hlavní mapou.
-  const main = document.querySelector('main');
-  const about = document.getElementById('o-projektu');
-  const sections = [...main.querySelectorAll('section.compare')];
-
-  sections.sort((a,b)=>
-    (order[a.id] ?? 999) - (order[b.id] ?? 999)
-  );
-
-  sections.forEach(section=>{
-    main.insertBefore(section, about);
-  });
-
-  // Stejné pořadí také v rozbalovacím menu „Místa“.
-  const menu = document.querySelector('.dropdown-menu');
-
-  if(menu){
-    const links = [...menu.querySelectorAll('a[href^="#"]')];
-
-    links.sort((a,b)=>{
-      const aId = a.getAttribute('href').slice(1);
-      const bId = b.getAttribute('href').slice(1);
-
-      return (order[aId] ?? 999) - (order[bId] ?? 999);
-    });
-
-    links.forEach(link=>{
-      menu.appendChild(link);
-    });
-  }
-});
-</script>
-
-  <div id="passwordGate">
+<div id="passwordGate">
   <form class="password-box" id="passwordForm">
     <h1>Vize Rtyně 2035</h1>
 
@@ -348,13 +294,14 @@ document.addEventListener('DOMContentLoaded',()=>{
 
   </main>
 
+  <script src="config.js"></script>
   <script src="slider.js"></script>
   <script src="hotspots.js"></script>
   <script src="script.js"></script>
   <script>
 (function () {
 
-const PASSWORD = "ks40";   // <-- sem napiš své heslo
+const PASSWORD = window.SETTINGS?.password || "ks40";
 
 const gate = document.getElementById("passwordGate");
 const form = document.getElementById("passwordForm");
