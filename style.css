@@ -2360,3 +2360,19 @@ body.hotspot-modal-open{
     opacity:.28;
   }
 }
+
+/* Mobilní tlačítko Vize — o 25 % menší a bez počtu položek */
+@media (max-width:820px){
+  .mobile-vision-button{
+    min-height:36px !important;
+    gap:0 !important;
+    padding:7px 13px !important;
+    border-width:1.5px !important;
+    font-size:13px !important;
+    box-shadow:0 7px 20px rgba(0,0,0,.32) !important;
+  }
+
+  .mobile-vision-button strong{
+    display:none !important;
+  }
+}

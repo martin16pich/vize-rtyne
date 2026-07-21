@@ -322,8 +322,7 @@
         hotspotsEl.appendChild(button);
       });
 
-      mobileButton.innerHTML =
-        `<span>Vize</span><strong>${items.length}</strong>`;
+      mobileButton.textContent = 'Vize';
       mobileButton.hidden = items.length === 0;
       positionHotspots();
     }
