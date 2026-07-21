@@ -93,15 +93,20 @@
     nextButton.disabled = disabled;
   }
 
-  function openGallery(items, placeName, trigger) {
+  function openGallery(items, placeName, trigger, startIndex = null) {
     if (!items.length) return;
 
     currentItems = items;
     currentPlace = placeName;
     currentTrigger = trigger;
+
+    const requestedIndex = Number.isInteger(startIndex)
+      ? startIndex
+      : Number(trigger.dataset.lastIndex || 0);
+
     currentIndex = Math.max(
       0,
-      Math.min(items.length - 1, Number(trigger.dataset.lastIndex || 0))
+      Math.min(items.length - 1, requestedIndex)
     );
 
     renderGalleryItem();
@@ -192,6 +197,7 @@
     const cardImage = card.querySelector('img');
     const cardTitle = card.querySelector('.card-body h2');
     const cardText = card.querySelector('.card-body p');
+    const futureLabel = container.querySelector('.labels span:last-child');
 
     let items = [];
     let activeButton = null;
@@ -299,7 +305,7 @@
       items = Array.isArray(data) ? data : [];
       hotspotsEl.innerHTML = '';
 
-      items.forEach((item) => {
+      items.forEach((item, itemIndex) => {
         const button = document.createElement('button');
         button.className = 'hotspot';
         button.type = 'button';
@@ -316,7 +322,13 @@
         button.addEventListener('click', (event) => {
           event.preventDefault();
           event.stopPropagation();
-          openDesktopCard(item, button);
+
+          if (isMobile()) {
+            openGallery(items, getPlaceName(), button, itemIndex);
+            return;
+          }
+
+          openGallery(items, getPlaceName(), button, itemIndex);
         });
 
         hotspotsEl.appendChild(button);
@@ -324,7 +336,44 @@
 
       mobileButton.textContent = 'Vize';
       mobileButton.hidden = items.length === 0;
+
+      if (futureLabel) {
+        futureLabel.classList.toggle('vision-label-button', items.length > 0);
+        futureLabel.setAttribute(
+          'aria-label',
+          items.length > 0
+            ? 'Otevřít galerii všech vizí'
+            : 'Vize budoucnosti'
+        );
+
+        if (items.length > 0) {
+          futureLabel.setAttribute('role', 'button');
+          futureLabel.setAttribute('tabindex', '0');
+        } else {
+          futureLabel.removeAttribute('role');
+          futureLabel.removeAttribute('tabindex');
+        }
+      }
+
       positionHotspots();
+    }
+
+    if (futureLabel) {
+      const openFromFutureLabel = (event) => {
+        if (!items.length) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+        openGallery(items, getPlaceName(), futureLabel, 0);
+      };
+
+      futureLabel.addEventListener('click', openFromFutureLabel);
+
+      futureLabel.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          openFromFutureLabel(event);
+        }
+      });
     }
 
     mobileButton.addEventListener('click', (event) => {
