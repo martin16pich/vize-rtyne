@@ -2778,3 +2778,10 @@ body.hotspot-modal-open{
     line-height:1;
   }
 }
+
+
+/* Odstranění vykřičníku v galerii Současnost */
+.vision-gallery--current .vision-gallery__title::before{
+    content:none !important;
+    display:none !important;
+}
