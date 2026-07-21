@@ -10,6 +10,17 @@
     'bezecke-trasy-palenka': 'data/palenka-hotspots.json'
   };
 
+  const currentSectionFiles = {
+    zabarna: 'data/zabarna-current.json',
+    kampelicka: 'data/kampelicka-current.json',
+    hornicka: 'data/hornicka-current.json',
+    namesti: 'data/namesti-current.json',
+    centrum: 'data/centrum-current.json',
+    odpady: 'data/odpady-current.json',
+    'rtynsky-trail': 'data/rtynsky-trail-current.json',
+    'bezecke-trasy-palenka': 'data/palenka-current.json'
+  };
+
   const MOBILE_BREAKPOINT = 820;
   const isMobile = () =>
     window.matchMedia(`(max-width:${MOBILE_BREAKPOINT}px)`).matches;
@@ -75,14 +86,18 @@
   let currentIndex = 0;
   let currentPlace = '';
   let currentTrigger = null;
+  let currentMode = 'vision';
 
   function renderGalleryItem() {
     if (!currentItems.length) return;
 
     const item = currentItems[currentIndex];
-    const original = item.image || '';
+    const original = currentMode === 'vision' ? (item.image || '') : '';
     const preferred = isMobile() ? mobileImagePath(original) : original;
 
+    modal.classList.toggle('vision-gallery--current', currentMode === 'current');
+    modal.classList.toggle('vision-gallery--vision', currentMode === 'vision');
+    imageEl.parentElement.hidden = currentMode === 'current';
     imageEl.hidden = !original;
 
     if (original) {
@@ -99,7 +114,10 @@
 
     titleEl.textContent = item.title || '';
     textEl.textContent = item.text || '';
-    placeEl.textContent = currentPlace;
+    placeEl.textContent =
+      currentMode === 'current'
+        ? `${currentPlace} · Současnost`
+        : `${currentPlace} · Vize budoucnosti`;
     counterEl.textContent = `${currentIndex + 1} / ${currentItems.length}`;
 
     const disabled = currentItems.length < 2;
@@ -107,12 +125,19 @@
     nextButton.disabled = disabled;
   }
 
-  function openGallery(items, placeName, trigger, startIndex = null) {
+  function openGallery(
+    items,
+    placeName,
+    trigger,
+    startIndex = null,
+    mode = 'vision'
+  ) {
     if (!items.length) return;
 
     currentItems = items;
     currentPlace = placeName;
     currentTrigger = trigger;
+    currentMode = mode;
 
     const requestedIndex = Number.isInteger(startIndex)
       ? startIndex
@@ -144,6 +169,7 @@
     currentItems = [];
     currentPlace = '';
     currentTrigger = null;
+    currentMode = 'vision';
   }
 
   function previousItem() {
@@ -168,9 +194,11 @@
     if (modal.hidden) return;
     if (event.key === 'ArrowLeft') previousItem();
     if (event.key === 'ArrowRight') nextItem();
+    if (event.key === 'Escape') closeGallery();
   });
 
   Object.entries(sectionFiles).forEach(([sectionId, dataFile]) => {
+    const currentDataFile = currentSectionFiles[sectionId];
     const container = document.getElementById(sectionId);
     if (!container) return;
 
@@ -203,6 +231,16 @@
       container.appendChild(mobileButton);
     }
 
+    let mobileCurrentButton = container.querySelector('.mobile-current-button');
+    if (!mobileCurrentButton) {
+      mobileCurrentButton = document.createElement('button');
+      mobileCurrentButton.className = 'mobile-current-button';
+      mobileCurrentButton.type = 'button';
+      mobileCurrentButton.textContent = 'Současnost';
+      mobileCurrentButton.hidden = true;
+      container.appendChild(mobileCurrentButton);
+    }
+
     const image = container.querySelector('.compare-future');
     const slider = container.querySelector('.compare-range');
     if (!image || !slider) return;
@@ -211,9 +249,12 @@
     const cardImage = card.querySelector('img');
     const cardTitle = card.querySelector('.card-body h2');
     const cardText = card.querySelector('.card-body p');
-    const futureLabel = container.querySelector('.labels span:last-child');
+    const labels = container.querySelectorAll('.labels span');
+    const currentLabel = labels[0] || null;
+    const futureLabel = labels[labels.length - 1] || null;
 
     let items = [];
+    let currentItemsForPlace = [];
     let activeButton = null;
     let comparePercent = Number(slider.value || 50);
 
@@ -340,11 +381,11 @@
           event.stopPropagation();
 
           if (isMobile()) {
-            openGallery(items, getPlaceName(), button, itemIndex);
+            openGallery(items, getPlaceName(), button, itemIndex, 'vision');
             return;
           }
 
-          openGallery(items, getPlaceName(), button, itemIndex);
+          openGallery(items, getPlaceName(), button, itemIndex, 'vision');
         });
 
         hotspotsEl.appendChild(button);
@@ -374,6 +415,71 @@
       positionHotspots();
     }
 
+    function renderCurrentItems(data) {
+      currentItemsForPlace = Array.isArray(data) ? data : [];
+
+      mobileCurrentButton.hidden = currentItemsForPlace.length === 0;
+
+      if (currentLabel) {
+        currentLabel.classList.toggle(
+          'current-label-button',
+          currentItemsForPlace.length > 0
+        );
+        currentLabel.setAttribute(
+          'aria-label',
+          currentItemsForPlace.length > 0
+            ? 'Otevřít slabiny lokality v současnosti'
+            : 'Současnost'
+        );
+
+        if (currentItemsForPlace.length > 0) {
+          currentLabel.setAttribute('role', 'button');
+          currentLabel.setAttribute('tabindex', '0');
+        } else {
+          currentLabel.removeAttribute('role');
+          currentLabel.removeAttribute('tabindex');
+        }
+      }
+    }
+
+    if (currentLabel) {
+      protectFromCompareSlider(currentLabel);
+
+      const openCurrentGallery = (event) => {
+        if (!currentItemsForPlace.length) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+        openGallery(
+          currentItemsForPlace,
+          getPlaceName(),
+          currentLabel,
+          0,
+          'current'
+        );
+      };
+
+      currentLabel.addEventListener('click', openCurrentGallery);
+      currentLabel.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          openCurrentGallery(event);
+        }
+      });
+    }
+
+    protectFromCompareSlider(mobileCurrentButton);
+    mobileCurrentButton.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      openGallery(
+        currentItemsForPlace,
+        getPlaceName(),
+        mobileCurrentButton,
+        null,
+        'current'
+      );
+    });
+
     if (futureLabel) {
       protectFromCompareSlider(futureLabel);
 
@@ -382,7 +488,7 @@
 
         event.preventDefault();
         event.stopPropagation();
-        openGallery(items, getPlaceName(), futureLabel, 0);
+        openGallery(items, getPlaceName(), futureLabel, 0, 'vision');
       };
 
       futureLabel.addEventListener('click', openFromFutureLabel);
@@ -399,13 +505,18 @@
     mobileButton.addEventListener('click', (event) => {
       event.preventDefault();
       event.stopPropagation();
-      openGallery(items, getPlaceName(), mobileButton);
+      openGallery(items, getPlaceName(), mobileButton, null, 'vision');
     });
 
     fetch(dataFile)
       .then((response) => response.ok ? response.json() : [])
       .then(renderHotspots)
       .catch(() => renderHotspots([]));
+
+    fetch(currentDataFile)
+      .then((response) => response.ok ? response.json() : [])
+      .then(renderCurrentItems)
+      .catch(() => renderCurrentItems([]));
 
     document.addEventListener('compare:change', (event) => {
       if (event.detail.container === container) {
