@@ -51,6 +51,33 @@ body.is-locked > *:not(#passwordGate){
 </style>
 </head>
 <body>
+
+<script>
+/* ===========================================================
+   NASTAVENÍ WEBU
+   Změň pouze čísla v sectionOrder.
+   =========================================================== */
+const SETTINGS={
+  sectionOrder:{
+    centrum:1,
+    hornicka:2,
+    zabarna:3,
+    namesti:4,
+    kampelicka:5,
+    odpady:6,
+    "rtynsky-trail":7,
+    "bezecke-trasy-palenka":8
+  }
+};
+document.addEventListener('DOMContentLoaded',()=>{
+ const main=document.querySelector('main');
+ const about=document.getElementById('o-projektu');
+ const sections=[...main.querySelectorAll('section.compare')];
+ sections.sort((a,b)=>(SETTINGS.sectionOrder[a.id]??999)-(SETTINGS.sectionOrder[b.id]??999));
+ sections.forEach(s=>main.insertBefore(s,about));
+});
+</script>
+
   <div id="passwordGate">
   <form class="password-box" id="passwordForm">
     <h1>Vize Rtyně 2035</h1>
