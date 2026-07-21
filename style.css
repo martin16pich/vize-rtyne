@@ -2526,3 +2526,32 @@ body.hotspot-modal-open{
     cursor:default;
   }
 }
+
+
+/* Bez šipky v tlačítku „Vize budoucnosti“ */
+@media (min-width:821px){
+  .labels .vision-label-button::after{
+    content:"" !important;
+  }
+
+  /* Interaktivní prvky musí být nad neviditelnou vrstvou slideru. */
+  .hotspots{
+    z-index:60 !important;
+  }
+
+  .hotspot{
+    position:absolute;
+    z-index:61 !important;
+    touch-action:manipulation;
+  }
+
+  .labels{
+    z-index:62 !important;
+  }
+
+  .labels .vision-label-button{
+    position:relative;
+    z-index:63 !important;
+    touch-action:manipulation;
+  }
+}

@@ -17,6 +17,20 @@
   const mobileImagePath = (path) =>
     path ? path.replace(/\.[^./]+$/, '-mobile.webp') : '';
 
+  /*
+    Slider poslouchá pohyb po celé fotografii. Interaktivní prvky proto
+    musí zastavit pointer událost dříve, než ji slider zachytí.
+  */
+  function protectFromCompareSlider(element) {
+    if (!element) return;
+
+    ['pointerdown', 'mousedown', 'touchstart'].forEach((eventName) => {
+      element.addEventListener(eventName, (event) => {
+        event.stopPropagation();
+      }, { passive: eventName === 'touchstart' });
+    });
+  }
+
   const backdrop = document.createElement('div');
   backdrop.className = 'vision-gallery-backdrop';
   backdrop.hidden = true;
@@ -312,6 +326,8 @@
         button.dataset.x = item.x;
         button.dataset.y = item.y;
         button.setAttribute('aria-label', item.title || 'Hotspot');
+        protectFromCompareSlider(button);
+
         button.innerHTML =
           '<span class="hotspot-dot"></span>' +
           '<span class="hotspot-tooltip"></span>';
@@ -359,6 +375,8 @@
     }
 
     if (futureLabel) {
+      protectFromCompareSlider(futureLabel);
+
       const openFromFutureLabel = (event) => {
         if (!items.length) return;
 
@@ -375,6 +393,8 @@
         }
       });
     }
+
+    protectFromCompareSlider(mobileButton);
 
     mobileButton.addEventListener('click', (event) => {
       event.preventDefault();
