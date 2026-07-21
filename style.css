@@ -2785,3 +2785,40 @@ body.hotspot-modal-open{
     content:none !important;
     display:none !important;
 }
+
+
+/* Mobilní pulzování tlačítek Současnost / Vize */
+@media (max-width:820px){
+
+  .mobile-vision-button,
+  .mobile-current-button{
+    overflow:visible !important;
+    isolation:isolate;
+  }
+
+  .mobile-vision-button::before,
+  .mobile-current-button::before{
+    content:"";
+    position:absolute;
+    inset:-5px;
+    border:2px solid rgba(255,255,255,.55);
+    border-radius:999px;
+    pointer-events:none;
+    animation:mobileHotspotPulse 1.8s ease-out infinite;
+  }
+
+  @keyframes mobileHotspotPulse{
+    0%{
+      transform:scale(.92);
+      opacity:.75;
+    }
+    75%{
+      transform:scale(1.18);
+      opacity:0;
+    }
+    100%{
+      transform:scale(1.18);
+      opacity:0;
+    }
+  }
+}
