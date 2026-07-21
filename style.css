@@ -2555,3 +2555,45 @@ body.hotspot-modal-open{
     touch-action:manipulation;
   }
 }
+
+/* =========================================================
+   Pulzující tlačítko „Vize budoucnosti“
+   ========================================================= */
+@media (min-width:821px){
+  .labels .vision-label-button{
+    position:relative;
+    overflow:visible !important;
+    isolation:isolate;
+  }
+
+  .labels .vision-label-button::before{
+    content:"";
+    position:absolute;
+    inset:-7px;
+    z-index:-1;
+    border:2px solid rgba(255,255,255,.58);
+    border-radius:999px;
+    pointer-events:none;
+    animation:visionLabelPulse 1.8s ease-out infinite;
+  }
+
+  .labels .vision-label-button:hover::before,
+  .labels .vision-label-button:focus-visible::before{
+    border-color:rgba(47,141,78,.8);
+  }
+}
+
+@keyframes visionLabelPulse{
+  0%{
+    opacity:.7;
+    transform:scale(.9);
+  }
+  75%{
+    opacity:0;
+    transform:scale(1.18);
+  }
+  100%{
+    opacity:0;
+    transform:scale(1.18);
+  }
+}
