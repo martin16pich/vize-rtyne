@@ -1,4 +1,12 @@
 [
+    {
+    "id": "zakladni-trasa",
+    "title": "Základní trasa",
+    "text": "Snadná trať pro začátečníky.",
+    "image": "images/rtynsky-trail/hotspots/zaklad.jpg",
+    "x": 46.17,
+    "y": 63.56
+  },
   {
     "id": "skoky-a-dropy",
     "title": "Skoky a dropy",
@@ -6,14 +14,6 @@
     "image": "images/rtynsky-trail/hotspots/skoky.jpg",
     "x": 77.23,
     "y": 56.42
-  },
-  {
-    "id": "zakladni-trasa",
-    "title": "Základní trasa",
-    "text": "Snadná trať pro začátečníky.",
-    "image": "images/rtynsky-trail/hotspots/zaklad.jpg",
-    "x": 46.17,
-    "y": 63.56
   },
   {
     "id": "technicka-trasa",

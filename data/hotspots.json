@@ -1,11 +1,19 @@
 [
-  {
-    "id": "hriste",
-    "title": "Dětské hřiště",
-    "text": "Přírodní herní prvek pro děti, který zapadne do klidového charakteru okolí rybníka.",
-    "image": "images/zabarna/hotspots/hriste.jpg",
-    "x": 53.87,
-    "y": 52.14
+   {
+    "id": "molo",
+    "title": "Molo u vody",
+    "text": "Dřevěné molo pro posezení u hladiny, pozorování přírody a klidný kontakt s vodou.",
+    "image": "images/zabarna/hotspots/molo.jpg",
+    "x": 51.2,
+    "y": 63.4
+  },
+   {
+    "id": "privoz",
+    "title": "Přívoz přes rybník",
+    "text": "Zážitkový prvek, který propojí břehy a nabídne nový pohled na rybník.",
+    "image": "images/zabarna/hotspots/privoz.jpg",
+    "x": 61.9,
+    "y": 58.2
   },
   {
     "id": "ohniste",
@@ -16,27 +24,20 @@
     "y": 54.67
   },
   {
-    "id": "privoz",
-    "title": "Přívoz přes rybník",
-    "text": "Zážitkový prvek, který propojí břehy a nabídne nový pohled na rybník.",
-    "image": "images/zabarna/hotspots/privoz.jpg",
-    "x": 61.9,
-    "y": 58.2
+    "id": "hriste",
+    "title": "Dětské hřiště",
+    "text": "Přírodní herní prvek pro děti, který zapadne do klidového charakteru okolí rybníka.",
+    "image": "images/zabarna/hotspots/hriste.jpg",
+    "x": 53.87,
+    "y": 52.14
   },
-  {
+    {
     "id": "prouteny tunel",
     "title": "Proutěný tunel",
     "text": "Přírodní herní prvek z vrbového proutí.",
     "image": "images/zabarna/hotspots/prouteny_tunel.jpg",
     "x": 70.33,
     "y": 54.88
-  },
-  {
-    "id": "molo",
-    "title": "Molo u vody",
-    "text": "Dřevěné molo pro posezení u hladiny, pozorování přírody a klidný kontakt s vodou.",
-    "image": "images/zabarna/hotspots/molo.jpg",
-    "x": 51.2,
-    "y": 63.4
   }
+ 
 ]
