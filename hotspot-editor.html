@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Editor hotspotů 2.0 | Vize Rtyně 2035</title>
+  <style>
+    :root{
+      --bg:#0b100c;--panel:#121a14;--panel2:#18221a;--line:rgba(255,255,255,.13);
+      --text:#fff;--muted:rgba(255,255,255,.68);--green:#2f8d4e;--danger:#c94848;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+    button,input,textarea,select{font:inherit}
+    button{cursor:pointer}
+    .app{min-height:100svh;display:grid;grid-template-columns:310px minmax(0,1fr) 390px}
+    .sidebar,.inspector{background:var(--panel);padding:20px;overflow:auto}
+    .sidebar{border-right:1px solid var(--line)}
+    .inspector{border-left:1px solid var(--line)}
+    h1{margin:0;font-size:24px;letter-spacing:-.03em}
+    h2{margin:0 0 14px;font-size:19px}
+    .muted{color:var(--muted);line-height:1.45;font-size:14px}
+    .mode{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:18px 0}
+    .mode button,.place-btn,.action,.small{
+      border:1px solid var(--line);background:rgba(255,255,255,.06);color:#fff;border-radius:12px;
+      padding:11px 12px;font-weight:800
+    }
+    .mode button.active,.place-btn.active{background:#fff;color:#111}
+    .places{display:grid;gap:7px}
+    .place-btn{text-align:left}
+    .toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+    .action.primary{background:#fff;color:#111}
+    .action.green{background:var(--green);border-color:var(--green)}
+    .action.danger{background:var(--danger);border-color:var(--danger)}
+    .workspace{min-width:0;display:grid;grid-template-rows:auto minmax(0,1fr)}
+    .topbar{padding:14px 18px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .status{font-size:13px;color:var(--muted)}
+    .canvas-wrap{position:relative;min-height:520px;overflow:hidden;background:#050805}
+    .canvas{position:absolute;inset:0;overflow:hidden;cursor:crosshair}
+    .canvas img{width:100%;height:100%;display:block;object-fit:cover;pointer-events:none;user-select:none}
+    .empty-current{position:absolute;inset:0;display:grid;place-items:center;padding:30px;text-align:center;color:var(--muted)}
+    .point{position:absolute;left:var(--x);top:var(--y);width:30px;height:30px;border:0;border-radius:50%;
+      transform:translate(-50%,-50%);background:#fff;box-shadow:0 0 0 7px rgba(255,255,255,.28),0 12px 30px rgba(0,0,0,.4);z-index:3}
+    .point.active{background:#111;box-shadow:0 0 0 8px rgba(255,255,255,.72),0 12px 30px rgba(0,0,0,.45)}
+    .point span{position:absolute;left:50%;bottom:42px;transform:translateX(-50%);white-space:nowrap;background:#fff;color:#111;border-radius:999px;padding:6px 10px;font-size:12px;font-weight:900}
+    label{display:grid;gap:6px;margin-bottom:12px;color:var(--muted);font-size:13px;font-weight:750}
+    input,textarea{width:100%;border:1px solid var(--line);border-radius:10px;background:#080c09;color:#fff;padding:10px}
+    textarea{min-height:108px;resize:vertical;line-height:1.45}
+    .coords{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .items{display:grid;gap:7px;margin:16px 0}
+    .item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:8px;background:rgba(255,255,255,.04)}
+    .item-main{border:0;background:none;color:#fff;text-align:left;padding:4px;min-width:0}
+    .item-main strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .item-main small{color:var(--muted)}
+    .item.active{background:rgba(255,255,255,.13)}
+    .item-actions{display:flex;gap:4px}
+    .small{padding:6px 8px;border-radius:8px}
+    .json{min-height:190px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px}
+    .hidden{display:none!important}
+    .notice{padding:10px 12px;border:1px solid rgba(255,200,80,.35);background:rgba(255,200,80,.08);border-radius:12px;color:#ffe5a0;font-size:13px;line-height:1.4}
+    @media(max-width:1050px){
+      .app{grid-template-columns:250px minmax(0,1fr)}
+      .inspector{grid-column:1/-1;border-left:0;border-top:1px solid var(--line)}
+    }
+    @media(max-width:720px){
+      .app{display:block}.sidebar,.inspector{border:0}.canvas-wrap{height:55svh;min-height:380px}
+      .topbar{align-items:flex-start;flex-direction:column}.coords{grid-template-columns:1fr 1fr}
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <h1>Editor hotspotů 2.0</h1>
+    <p class="muted">Vize: body na obrázku. Současnost: textové slabiny bez fotografií.</p>
+
+    <div class="mode">
+      <button id="modeVision" class="active">Vize</button>
+      <button id="modeCurrent">Současnost</button>
+    </div>
+
+    <h2>Lokality</h2>
+    <div id="places" class="places"></div>
+
+    <div class="toolbar">
+      <button id="reload" class="action">Načíst z webu</button>
+      <label class="action" style="display:block;margin:0">
+        Import JSON
+        <input id="importFile" type="file" accept=".json,application/json" hidden>
+      </label>
+      <a href="index.html" class="action" style="text-decoration:none">Zpět na web</a>
+    </div>
+
+    <p class="notice">Editor neukládá změny přímo na server. Po úpravě stáhni JSON a nahraj ho do složky <b>data</b>.</p>
+  </aside>
+
+  <main class="workspace">
+    <header class="topbar">
+      <div>
+        <strong id="heading">Načítání…</strong>
+        <div id="filename" class="status"></div>
+      </div>
+      <div id="status" class="status">Připraveno</div>
+    </header>
+
+    <div class="canvas-wrap">
+      <div id="canvas" class="canvas">
+        <img id="background" alt="">
+        <div id="points"></div>
+        <div id="currentHelp" class="empty-current hidden">
+          <div>
+            <h2>Textové body současnosti</h2>
+            <p>U tohoto režimu nejsou souřadnice ani fotografie. Položky upravuj v pravém panelu a pořadí měň šipkami.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <aside class="inspector">
+    <h2>Položky</h2>
+    <button id="addItem" class="action green" style="width:100%">+ Přidat položku</button>
+    <div id="items" class="items"></div>
+
+    <section id="formSection" class="hidden">
+      <h2>Úprava položky</h2>
+      <label>ID
+        <input id="fieldId" autocomplete="off">
+      </label>
+      <label>Název
+        <input id="fieldTitle" autocomplete="off">
+      </label>
+      <label>Popis
+        <textarea id="fieldText"></textarea>
+      </label>
+      <label id="imageField">Cesta k obrázku
+        <input id="fieldImage" placeholder="images/lokalita/hotspots/obrazek.webp">
+      </label>
+      <div id="coordFields" class="coords">
+        <label>X (%)
+          <input id="fieldX" type="number" min="0" max="100" step="0.01">
+        </label>
+        <label>Y (%)
+          <input id="fieldY" type="number" min="0" max="100" step="0.01">
+        </label>
+      </div>
+      <div class="toolbar">
+        <button id="deleteItem" class="action danger">Smazat položku</button>
+      </div>
+    </section>
+
+    <h2 style="margin-top:24px">Export</h2>
+    <div class="toolbar">
+      <button id="copyJson" class="action">Kopírovat JSON</button>
+      <button id="downloadJson" class="action primary">Stáhnout JSON</button>
+    </div>
+    <textarea id="jsonOutput" class="json" spellcheck="false"></textarea>
+  </aside>
+</div>
+
+<script>
+(() => {
+  const locations = [
+    {id:'zabarna', title:'Žabárna', folder:'zabarna', vision:'data/hotspots.json', current:'data/zabarna-current.json'},
+    {id:'kampelicka', title:'Park před Kampeličkou', folder:'kampelicka', vision:'data/kampelicka-hotspots.json', current:'data/kampelicka-current.json'},
+    {id:'hornicka', title:'Hornická ulice', folder:'hornicka', vision:'data/hornicka-hotspots.json', current:'data/hornicka-current.json'},
+    {id:'namesti', title:'Náměstí', folder:'namesti', vision:'data/namesti-hotspots.json', current:'data/namesti-current.json'},
+    {id:'centrum', title:'Centrum města', folder:'centrum', vision:'data/centrum-hotspots.json', current:'data/centrum-current.json'},
+    {id:'odpady', title:'Odpadová místa', folder:'odpady', vision:'data/odpady-hotspots.json', current:'data/odpady-current.json'},
+    {id:'rtynsky-trail', title:'Rtyňský trail', folder:'rtynsky-trail', vision:'data/rtynsky-trail-hotspots.json', current:'data/rtynsky-trail-current.json'},
+    {id:'bezecke-trasy-palenka', title:'Běžecké trasy Pálenka', folder:'palenka', vision:'data/palenka-hotspots.json', current:'data/palenka-current.json'}
+  ];
+
+  const $ = id => document.getElementById(id);
+  const els = {
+    places:$('places'), modeVision:$('modeVision'), modeCurrent:$('modeCurrent'),
+    heading:$('heading'), filename:$('filename'), status:$('status'), canvas:$('canvas'),
+    background:$('background'), points:$('points'), currentHelp:$('currentHelp'),
+    items:$('items'), addItem:$('addItem'), form:$('formSection'), fieldId:$('fieldId'),
+    fieldTitle:$('fieldTitle'), fieldText:$('fieldText'), imageField:$('imageField'),
+    fieldImage:$('fieldImage'), coordFields:$('coordFields'), fieldX:$('fieldX'),
+    fieldY:$('fieldY'), deleteItem:$('deleteItem'), json:$('jsonOutput'),
+    copy:$('copyJson'), download:$('downloadJson'), reload:$('reload'), importFile:$('importFile')
+  };
+
+  let mode = 'vision';
+  let location = locations[0];
+  let data = [];
+  let selected = -1;
+  let dragging = false;
+
+  const clamp = n => Math.max(0, Math.min(100, Number(n) || 0));
+  const slugify = value => String(value || 'nova-polozka')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase()
+    .replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'') || 'nova-polozka';
+
+  function filePath(){ return location[mode]; }
+  function fileName(){ return filePath().split('/').pop(); }
+  function backgroundPath(){ return `images/${location.folder}/vize.jpg`; }
+
+  function setStatus(text){ els.status.textContent = text; }
+
+  function normalize(raw){
+    if(!Array.isArray(raw)) return [];
+    return raw.map((item, index) => mode === 'vision' ? {
+      id: item.id || slugify(item.title || `bod-${index+1}`),
+      title: item.title || '',
+      text: item.text || item.description || '',
+      image: item.image || '',
+      x: clamp(item.x ?? 50),
+      y: clamp(item.y ?? 50)
+    } : {
+      title: item.title || '',
+      text: item.text || item.description || ''
+    });
+  }
+
+  async function load(){
+    setStatus('Načítám…');
+    selected = -1;
+    try{
+      const response = await fetch(filePath(), {cache:'no-store'});
+      if(!response.ok) throw new Error(`HTTP ${response.status}`);
+      data = normalize(await response.json());
+      setStatus(`Načteno ${data.length} položek`);
+    }catch(error){
+      data = [];
+      setStatus('Soubor se nepodařilo načíst. Lze jej importovat ručně.');
+    }
+    renderAll();
+  }
+
+  function renderPlaces(){
+    els.places.innerHTML = '';
+    locations.forEach(item => {
+      const button = document.createElement('button');
+      button.className = 'place-btn' + (item.id === location.id ? ' active' : '');
+      button.textContent = item.title;
+      button.onclick = () => { location = item; load(); renderPlaces(); };
+      els.places.appendChild(button);
+    });
+  }
+
+  function renderCanvas(){
+    const vision = mode === 'vision';
+    els.background.classList.toggle('hidden', !vision);
+    els.currentHelp.classList.toggle('hidden', vision);
+    els.points.classList.toggle('hidden', !vision);
+    if(vision){
+      els.background.src = backgroundPath();
+      els.background.alt = location.title;
+    }
+    els.points.innerHTML = '';
+    if(!vision) return;
+
+    data.forEach((item,index) => {
+      const p = document.createElement('button');
+      p.className = 'point' + (index === selected ? ' active' : '');
+      p.style.setProperty('--x', `${item.x}%`);
+      p.style.setProperty('--y', `${item.y}%`);
+      p.innerHTML = `<span>${escapeHtml(item.title || `Bod ${index+1}`)}</span>`;
+      p.onpointerdown = event => {
+        event.preventDefault(); dragging = true; selected = index; p.setPointerCapture(event.pointerId);
+        moveByPointer(event); renderAll();
+      };
+      p.onpointermove = event => { if(dragging) moveByPointer(event); };
+      p.onpointerup = () => { dragging = false; };
+      p.onclick = event => { event.stopPropagation(); selected=index; renderAll(); };
+      els.points.appendChild(p);
+    });
+  }
+
+  function moveByPointer(event){
+    if(selected < 0 || mode !== 'vision') return;
+    const rect = els.canvas.getBoundingClientRect();
+    data[selected].x = Number(clamp((event.clientX-rect.left)/rect.width*100).toFixed(2));
+    data[selected].y = Number(clamp((event.clientY-rect.top)/rect.height*100).toFixed(2));
+    renderCanvas(); renderForm(); renderJson();
+  }
+
+  els.canvas.addEventListener('click', event => {
+    if(mode !== 'vision' || selected < 0 || event.target.closest('.point')) return;
+    moveByPointer(event);
+  });
+
+  function escapeHtml(value){
+    return String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
+  }
+
+  function renderItems(){
+    els.items.innerHTML='';
+    data.forEach((item,index)=>{
+      const row=document.createElement('div');
+      row.className='item'+(index===selected?' active':'');
+      const main=document.createElement('button');
+      main.className='item-main';
+      main.innerHTML=`<strong>${escapeHtml(item.title || `Položka ${index+1}`)}</strong><small>${index+1} / ${data.length}</small>`;
+      main.onclick=()=>{selected=index;renderAll()};
+      const actions=document.createElement('div');
+      actions.className='item-actions';
+      const up=document.createElement('button'); up.className='small'; up.textContent='↑'; up.title='Posunout výš';
+      up.disabled=index===0; up.onclick=()=>moveItem(index,-1);
+      const down=document.createElement('button'); down.className='small'; down.textContent='↓'; down.title='Posunout níž';
+      down.disabled=index===data.length-1; down.onclick=()=>moveItem(index,1);
+      actions.append(up,down); row.append(main,actions); els.items.appendChild(row);
+    });
+  }
+
+  function moveItem(index,delta){
+    const next=index+delta; if(next<0||next>=data.length)return;
+    [data[index],data[next]]=[data[next],data[index]]; selected=next; renderAll();
+  }
+
+  function renderForm(){
+    const item=data[selected];
+    els.form.classList.toggle('hidden',!item);
+    if(!item)return;
+    els.fieldId.parentElement.classList.toggle('hidden',mode!=='vision');
+    els.imageField.classList.toggle('hidden',mode!=='vision');
+    els.coordFields.classList.toggle('hidden',mode!=='vision');
+    els.fieldId.value=item.id||'';
+    els.fieldTitle.value=item.title||'';
+    els.fieldText.value=item.text||'';
+    els.fieldImage.value=item.image||'';
+    els.fieldX.value=item.x??50;
+    els.fieldY.value=item.y??50;
+  }
+
+  function renderJson(){
+    els.json.value=JSON.stringify(data,null,2)+'\n';
+    els.heading.textContent=`${location.title} — ${mode==='vision'?'Vize':'Současnost'}`;
+    els.filename.textContent=filePath();
+  }
+
+  function renderAll(){ renderPlaces(); renderCanvas(); renderItems(); renderForm(); renderJson(); }
+
+  function updateField(key,value){
+    if(selected<0)return;
+    data[selected][key]=value;
+    if(key==='title' && mode==='vision' && !data[selected].id) data[selected].id=slugify(value);
+    renderCanvas(); renderItems(); renderJson();
+  }
+
+  els.fieldId.oninput=e=>updateField('id',e.target.value);
+  els.fieldTitle.oninput=e=>updateField('title',e.target.value);
+  els.fieldText.oninput=e=>updateField('text',e.target.value);
+  els.fieldImage.oninput=e=>updateField('image',e.target.value);
+  els.fieldX.oninput=e=>updateField('x',Number(clamp(e.target.value).toFixed(2)));
+  els.fieldY.oninput=e=>updateField('y',Number(clamp(e.target.value).toFixed(2)));
+
+  els.addItem.onclick=()=>{
+    if(mode==='vision'){
+      data.push({id:`novy-bod-${data.length+1}`,title:'Nový bod',text:'',image:'',x:50,y:50});
+    }else{
+      data.push({title:'Nová slabina',text:''});
+    }
+    selected=data.length-1; renderAll();
+  };
+
+  els.deleteItem.onclick=()=>{
+    if(selected<0)return;
+    if(!confirm(`Smazat položku „${data[selected].title}“?`))return;
+    data.splice(selected,1); selected=Math.min(selected,data.length-1); renderAll();
+  };
+
+  function setMode(next){
+    mode=next;
+    els.modeVision.classList.toggle('active',mode==='vision');
+    els.modeCurrent.classList.toggle('active',mode==='current');
+    load();
+  }
+  els.modeVision.onclick=()=>setMode('vision');
+  els.modeCurrent.onclick=()=>setMode('current');
+  els.reload.onclick=load;
+
+  els.copy.onclick=async()=>{
+    try{await navigator.clipboard.writeText(els.json.value);setStatus('JSON zkopírován');}
+    catch{els.json.select();setStatus('Text označen ke kopírování');}
+  };
+
+  els.download.onclick=()=>{
+    const blob=new Blob([els.json.value],{type:'application/json;charset=utf-8'});
+    const url=URL.createObjectURL(blob); const a=document.createElement('a');
+    a.href=url;a.download=fileName();document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+    setStatus(`Stažen ${fileName()}`);
+  };
+
+  els.importFile.onchange=async event=>{
+    const file=event.target.files[0]; if(!file)return;
+    try{data=normalize(JSON.parse(await file.text()));selected=data.length?0:-1;renderAll();setStatus(`Importováno ${data.length} položek`);}
+    catch{alert('Soubor není platný JSON.');}
+    event.target.value='';
+  };
+
+  els.json.addEventListener('change',()=>{
+    try{data=normalize(JSON.parse(els.json.value));selected=Math.min(selected,data.length-1);renderAll();setStatus('JSON použit');}
+    catch{alert('JSON obsahuje chybu.');renderJson();}
+  });
+
+  renderPlaces();
+  load();
+})();
+</script>
+</body>
+</html>
