@@ -2822,3 +2822,246 @@ body.hotspot-modal-open{
     }
   }
 }
+
+/* ==========================================================
+   ÚVODNÍ OBRAZOVKA
+   ========================================================== */
+
+.welcome-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 99998;
+background: linear-gradient(90deg, #123c82 0%, #2158a8 38%, #2c7ea0 68%, #6aa56f 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  overflow-y: auto;
+}
+
+.welcome-screen.is-hidden {
+  display: none;
+}
+
+.welcome-screen__content {
+  width: min(900px, 100%);
+  text-align: center;
+  margin: auto;
+}
+
+.welcome-screen h1 {
+  margin: 0 0 24px;
+  font-size: clamp(42px, 7vw, 82px);
+  line-height: 1;
+}
+
+.welcome-screen__intro {
+  max-width: 760px;
+  margin: 0 auto 45px;
+  font-size: clamp(17px, 2vw, 21px);
+  line-height: 1.6;
+}
+
+.welcome-help {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 35px;
+}
+
+.welcome-help__item {
+  background: rgba(255, 255, 255, 0.10);
+  border-radius: 18px;
+  padding: 28px;
+}
+
+.welcome-help__item h2 {
+  font-size: 21px;
+  margin: 20px 0 10px;
+  min-height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-help__item p {
+  margin: 0;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.welcome-slider-demo,
+.welcome-hotspot-demo-wrap {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* Ukázka posuvníku */
+
+.welcome-slider-demo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  font-size: 13px;
+  min-height: 48px;
+}
+
+.welcome-slider-demo__line {
+  position: relative;
+  width: 120px;
+  height: 3px;
+  background: #fff;
+}
+
+.welcome-slider-demo__handle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #fff;
+  color: #1d2b1f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+
+/* Ukázka hotspotu */
+
+.welcome-hotspot-demo {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  min-height: 18px;
+  margin: 0;
+  border-radius: 50%;
+  background: #ffffff;
+  aspect-ratio: 1 / 1;
+  flex: 0 0 18px;
+  box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.55);
+  animation: hotspotPulse 1.8s infinite ease-out;
+}
+
+.welcome-hotspot-demo::before {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.65);
+  animation: hotspotRing 1.8s infinite ease-out;
+}
+
+.welcome-hotspot-demo::after {
+  content: "";
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  animation: hotspotRingOuter 1.8s infinite ease-out;
+}
+
+@keyframes hotspotPulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.45);
+  }
+  70% {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 14px rgba(255, 255, 255, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+@keyframes hotspotRing {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+  }
+  70% {
+    transform: scale(1.15);
+    opacity: 0.15;
+  }
+  100% {
+    transform: scale(1.3);
+    opacity: 0;
+  }
+}
+
+@keyframes hotspotRingOuter {
+  0% {
+    transform: scale(0.7);
+    opacity: 0.45;
+  }
+  70% {
+    transform: scale(1.2);
+    opacity: 0.08;
+  }
+  100% {
+    transform: scale(1.4);
+    opacity: 0;
+  }
+}
+
+
+/* Logo */
+
+.welcome-screen__logo {
+  display: block;
+  width: min(210px, 55vw);
+  height: auto;
+  margin: 0 auto 28px;
+}
+
+
+/* Tlačítko */
+
+.welcome-screen__button {
+  border: 0;
+  border-radius: 999px;
+  padding: 15px 32px;
+  font-size: 17px;
+  font-weight: 700;
+  cursor: pointer;
+  background: #fff;
+  color: #1d2b1f;
+  transition: transform 0.2s ease;
+}
+
+.welcome-screen__button:hover {
+  transform: scale(1.04);
+}
+
+
+/* Mobil */
+
+@media (max-width: 700px) {
+
+  .welcome-screen {
+    padding: 30px 18px;
+  }
+
+  .welcome-help {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin-bottom: 26px;
+  }
+
+  .welcome-help__item {
+    padding: 22px 18px;
+  }
+
+  .welcome-screen__intro {
+    margin-bottom: 28px;
+  }
+
+}

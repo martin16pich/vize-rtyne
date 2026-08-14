@@ -51,6 +51,8 @@ body.is-locked > *:not(#passwordGate){
 </style>
 </head>
 <body>
+
+  
 <div id="passwordGate">
   <form class="password-box" id="passwordForm">
     <h1>Vize Rtyně 2035</h1>
@@ -70,6 +72,61 @@ body.is-locked > *:not(#passwordGate){
     <div id="passwordError"></div>
   </form>
 </div>
+
+<div class="welcome-screen" id="welcomeScreen">
+  <div class="welcome-screen__content">
+
+    <h1>Vize Rtyně 2035</h1>
+
+    <p class="welcome-screen__intro">
+      Vítáme Vás na stránkách volebního sdružení Rtyňáci, kde představujeme
+      naše vize Rtyně v Podkrkonoší, kam bychom ji v následujících letech chtěli posunout.
+    </p>
+
+    <div class="welcome-help">
+
+      <div class="welcome-help__item">
+        <div class="welcome-slider-demo">
+          <span>Současnost</span>
+          <div class="welcome-slider-demo__line">
+            <div class="welcome-slider-demo__handle">↔</div>
+          </div>
+          <span>Vize</span>
+        </div>
+
+        <h2>Porovnávejte současnost a vizi</h2>
+        <p>
+          Posunutím svislého posuvníku můžete porovnat současný stav místa
+          s naší představou jeho možné budoucí podoby.
+        </p>
+      </div>
+
+      <div class="welcome-help__item">
+       <div class="welcome-hotspot-demo-wrap">
+  <div class="welcome-hotspot-demo"></div>
+</div>
+
+        <h2>Rozklikněte jednotlivé nápady</h2>
+        <p>
+          Kliknutím na označené body zobrazíte podrobnější informace a inspirativní fotografie k jednotlivým návrhům.
+        </p>
+      </div>
+
+    </div>
+
+    <img
+      class="welcome-screen__logo"
+      src="images/o-projektu/logo-rtynaci.png"
+      alt="Rtyňáci"
+    >
+
+    <button class="welcome-screen__button" id="welcomeContinue">
+      Prohlédnout vize
+    </button>
+
+  </div>
+</div>
+
   <header class="topbar" aria-label="Hlavní navigace">
     <nav class="nav" aria-label="Menu">
       <a href="#uvod" class="nav-link">Mapa</a>
@@ -77,9 +134,9 @@ body.is-locked > *:not(#passwordGate){
         <button class="dropdown-toggle" type="button">Místa</button>
         <div class="dropdown-menu" aria-label="Seznam míst">
           <a href="#zabarna">Žabárna</a>
-          <a href="#horni">Hřiště na Horní Rtyni</a>
+          <a href="#horni">Hřiště na horní Rtyni</a>
           <a href="#hornicka">Hornická ulice</a>
-          <a href="#namesti">Náměstí</a>
+          <a href="#dolni">Hřiště na dolní Rtyni</a>
           <a href="#centrum">Centrum města</a>
           <a href="#odpady">Odpadová místa</a>
           <a href="#rtynsky-trail">Rtyňský trail</a>
@@ -122,13 +179,13 @@ body.is-locked > *:not(#passwordGate){
       <div class="labels" aria-hidden="true"><span>Současnost</span><span>Vize budoucnosti</span></div>
     </section>
 
-    <section id="horni" class="compare page" aria-label="Hřiště na Horní Rtyni">
-      <picture><source media="(max-width: 820px)" srcset="images/horni/vize-mobile.webp" type="image/webp" /><img class="compare-img compare-future" src="images/horni/vize.jpg" alt="Vize Hřiště na Horní Rtyni" loading="lazy" decoding="async" /></picture>
-      <div class="compare-before"><picture><source media="(max-width: 820px)" srcset="images/horni/soucasnost-mobile.webp" type="image/webp" /><img class="compare-img compare-current" src="images/horni/soucasnost.jpg" alt="Současný stav Hřiště na Horní Rtyni" loading="lazy" decoding="async" /></picture></div>
-      <input class="compare-range" type="range" min="0" max="100" value="50" aria-label="Porovnání Hřiště na Horní Rtyni" />
+    <section id="horni" class="compare page" aria-label="Hřiště na horní Rtyni">
+      <picture><source media="(max-width: 820px)" srcset="images/horni/vize-mobile.webp" type="image/webp" /><img class="compare-img compare-future" src="images/horni/vize.jpg" alt="Vize Hřiště na horní Rtyni" loading="lazy" decoding="async" /></picture>
+      <div class="compare-before"><picture><source media="(max-width: 820px)" srcset="images/horni/soucasnost-mobile.webp" type="image/webp" /><img class="compare-img compare-current" src="images/horni/soucasnost.jpg" alt="Současný stav Hřiště na horní Rtyni" loading="lazy" decoding="async" /></picture></div>
+      <input class="compare-range" type="range" min="0" max="100" value="50" aria-label="Porovnání Hřiště na horní Rtyni" />
       <div class="compare-line" aria-hidden="true"><span class="handle">↔</span></div>
-      <div class="title-card"><h1>Hřiště na Horní Rtyni</h1></div>
-      <div class="hotspots" data-hotspots="data/horni-hotspots.json" aria-label="Klikací body vize Hřiště na Horní Rtyni"></div>
+      <div class="title-card"><h1>Hřiště na horní Rtyni</h1></div>
+      <div class="hotspots" data-hotspots="data/horni-hotspots.json" aria-label="Klikací body vize Hřiště na horní Rtyni"></div>
       <article class="info-card" hidden>
         <button class="card-close" aria-label="Zavřít kartu">×</button>
         <img src="" alt="" />
@@ -149,12 +206,12 @@ body.is-locked > *:not(#passwordGate){
       <div class="labels" aria-hidden="true"><span>Současnost</span><span>Vize budoucnosti</span></div>
     </section>
 
-    <section id="namesti" class="compare page empty-future" aria-label="Náměstí">
-      <picture><source media="(max-width: 820px)" srcset="images/namesti/vize-mobile.webp" type="image/webp" /><img class="compare-img compare-future" src="images/namesti/vize.jpg" alt="Prázdná vize náměstí" loading="lazy" decoding="async" /></picture>
-      <div class="compare-before"><picture><source media="(max-width: 820px)" srcset="images/namesti/soucasnost-mobile.webp" type="image/webp" /><img class="compare-img compare-current" src="images/namesti/soucasnost.jpg" alt="Současný stav náměstí" loading="lazy" decoding="async" /></picture></div>
-      <input class="compare-range" type="range" min="0" max="100" value="50" aria-label="Porovnání náměstí" />
+    <section id="dolni" class="compare page empty-future" aria-label="Hřiště na  Rtyni">
+      <picture><source media="(max-width: 820px)" srcset="images/dolni/vize-mobile.webp" type="image/webp" /><img class="compare-img compare-future" src="images/dolni/vize.jpg" alt="Prázdná vize Hřiště na dolní Rtyni" loading="lazy" decoding="async" /></picture>
+      <div class="compare-before"><picture><source media="(max-width: 820px)" srcset="images/dolni/soucasnost-mobile.webp" type="image/webp" /><img class="compare-img compare-current" src="images/dolni/soucasnost.jpg" alt="Současný stav Hřiště na dolní Rtyni" loading="lazy" decoding="async" /></picture></div>
+      <input class="compare-range" type="range" min="0" max="100" value="50" aria-label="Porovnání Hřiště na dolní Rtyni" />
       <div class="compare-line" aria-hidden="true"><span class="handle">↔</span></div>
-      <div class="title-card"><h1>Náměstí</h1></div>
+      <div class="title-card"><h1>Hřiště na dolní Rtyni</h1></div>
       <div class="labels" aria-hidden="true"><span>Současnost</span><span>Vize budoucnosti</span></div>
     </section>
 

@@ -20,7 +20,7 @@ window.SETTINGS = {
     centrum: 1,
     hornicka: 2,
     zabarna: 3,
-    namesti: 4,
+    dolni: 4,
     horni: 5,
     odpady: 6,
     "rtynsky-trail": 7,

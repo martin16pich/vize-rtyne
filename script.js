@@ -161,3 +161,19 @@
     }
   });
 })();
+
+/* ==========================================================
+   ÚVODNÍ OBRAZOVKA – zobrazí se pouze při první návštěvě
+   ========================================================== */
+
+(function () {
+  const welcomeScreen = document.getElementById("welcomeScreen");
+  const welcomeContinue = document.getElementById("welcomeContinue");
+
+  if (!welcomeScreen || !welcomeContinue) return;
+
+
+  welcomeContinue.addEventListener("click", function () {
+    welcomeScreen.classList.add("is-hidden");
+  });
+})();

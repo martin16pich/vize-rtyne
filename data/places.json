@@ -7,10 +7,9 @@
   },
   {
     "id": "horni",
-    "title": "Hřiště na Horní Rtyni",
+    "title": "Hřiště na horní Rtyni",
     "x": 96.2,
-    "y": 47.42,
-    "icon": "arrow-right"
+    "y": 47.42
   },
   {
     "id": "hornicka",
@@ -19,10 +18,10 @@
     "y": 32.85
   },
   {
-    "id": "namesti",
-    "title": "Náměstí",
-    "x": 45.55,
-    "y": 37.25
+    "id": "dolni",
+    "title": "Hřiště na dolni Rtyni",
+    "x": 30.51,
+    "y": 26.78
   },
   {
     "id": "centrum",
@@ -40,14 +39,12 @@
     "id": "rtynsky-trail",
     "title": "Rtyňský trail",
     "x": 61.42,
-    "y": 96.05,
-    "icon": "arrow-down"
+    "y": 96.05
   },
   {
     "id": "bezecke-trasy-palenka",
     "title": "Běžecké trasy Pálenka",
     "x": 8.04,
-    "y": 85.84,
-    "icon": "arrow-left"
+    "y": 85.84
   }
 ]
