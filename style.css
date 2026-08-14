@@ -3080,6 +3080,10 @@ background: linear-gradient(90deg, #123c82 0%, #2158a8 38%, #2c7ea0 68%, #6aa56f
     width: 100% !important;
     height: 100dvh !important;
 
+    display: block !important;
+align-items: initial !important;
+justify-content: initial !important;
+
     padding:
     calc(16px + env(safe-area-inset-top))
     16px
@@ -3115,8 +3119,8 @@ background: linear-gradient(90deg, #123c82 0%, #2158a8 38%, #2c7ea0 68%, #6aa56f
   }
 
   .welcome-screen h1 {
-    margin: 8px 0 18px !important;
-    padding-top: 6px;
+   margin: 0 0 18px !important;
+padding-top: 8px !important;
 
     font-size: clamp(38px, 11vw, 56px) !important;
     line-height: 1 !important;
