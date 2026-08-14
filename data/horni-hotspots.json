@@ -4,23 +4,23 @@
     "title": "Kuličková dráha",
     "text": "Herní prvek pro děti.",
     "image": "images/horni/hotspots/kulickova-draha.jpg",
-    "x": 37.5,
-    "y": 46.0
+    "x": 57.75,
+    "y": 69.03
   },
   {
     "id": "altan",
     "title": "Altán s lavičkami",
     "text": "Nový altán sloužící k posezení kolemjdoucích, nebo rodičů dětí hrajících si na hřišti.",
     "image": "images/horni/hotspots/altan.jpg",
-    "x": 44.7,
-    "y": 60.8
+    "x": 49.15,
+    "y": 60.02
   },
   {
     "id": "pruzinova-houpacka",
     "title": "Pružinová houpačka",
     "text": "Houpačky pro malé děti.",
     "image": "images/horni/hotspots/pruzinova-houpacka.jpg",
-    "x": 45.33,
-    "y": 47.86
+    "x": 48.53,
+    "y": 68.22
   }
 ]
