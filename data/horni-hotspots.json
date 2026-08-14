@@ -8,9 +8,9 @@
     "y": 46.0
   },
   {
-    "id": "zastavka",
-    "title": "Zastávka",
-    "text": "Nová autobusová zastávka, která bude zároveň sloužit jako altán k parku.",
+    "id": "altan",
+    "title": "Altán s lavičkami",
+    "text": "Nový altán sloužící k posezení kolemjdoucích, nebo rodičů dětí hrajících si na hřišti.",
     "image": "images/horni/hotspots/zastavka.jpg",
     "x": 44.7,
     "y": 60.8
