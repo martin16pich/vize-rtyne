@@ -177,3 +177,96 @@
     welcomeScreen.classList.add("is-hidden");
   });
 })();
+
+/* ==========================================================
+   MOBIL – přednačtení obrázků hotspotů
+   ========================================================== */
+
+(function () {
+
+  if (!window.matchMedia("(max-width: 820px)").matches) return;
+
+  const hotspotContainers =
+    document.querySelectorAll(".hotspots[data-hotspots]");
+
+  const preloadImage = function (src) {
+    if (!src) return;
+
+    const image = new Image();
+    image.src = src;
+  };
+
+
+  async function preloadHotspotImages() {
+
+    for (const container of hotspotContainers) {
+
+      const jsonPath = container.dataset.hotspots;
+
+      if (!jsonPath) continue;
+
+      try {
+
+        const response = await fetch(jsonPath);
+
+        if (!response.ok) continue;
+
+        const hotspots = await response.json();
+
+        hotspots.forEach(function (hotspot) {
+
+          if (!hotspot.image) return;
+
+          /*
+             Na mobilu nejdřív zkusíme mobilní WEBP variantu.
+             Např.
+             parkoviste.jpg
+             →
+             parkoviste-mobile.webp
+          */
+
+          const mobileImage =
+            hotspot.image.replace(
+              /\.(jpg|jpeg|png)$/i,
+              "-mobile.webp"
+            );
+
+          preloadImage(mobileImage);
+
+          /* záloha / desktop obrázek */
+          preloadImage(hotspot.image);
+
+        });
+
+      } catch (error) {
+        console.warn(
+          "Nepodařilo se přednačíst hotspoty:",
+          jsonPath,
+          error
+        );
+      }
+
+    }
+
+  }
+
+
+  /*
+     Necháme nejdřív načíst samotnou stránku,
+     potom potichu začneme tahat hotspot obrázky.
+  */
+
+  if ("requestIdleCallback" in window) {
+
+    requestIdleCallback(
+      preloadHotspotImages,
+      { timeout: 2000 }
+    );
+
+  } else {
+
+    setTimeout(preloadHotspotImages, 800);
+
+  }
+
+})();

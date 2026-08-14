@@ -3065,3 +3065,202 @@ background: linear-gradient(90deg, #123c82 0%, #2158a8 38%, #2c7ea0 68%, #6aa56f
   }
 
 }
+
+/* ==========================================================
+   ÚVODNÍ OBRAZOVKA – MOBIL FINÁLNÍ
+   ========================================================== */
+
+@media (max-width: 700px) {
+
+  .welcome-screen {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 99998 !important;
+
+    width: 100% !important;
+    height: 100dvh !important;
+
+    padding:
+      calc(20px + env(safe-area-inset-top))
+      16px
+      calc(20px + env(safe-area-inset-bottom)) !important;
+
+    overflow-y: auto !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        #103b7a 0%,
+        #17629a 42%,
+        #23867e 72%,
+        #4f9967 100%
+      ) !important;
+
+    color: #fff;
+  }
+
+
+  .welcome-screen__content {
+    width: 100% !important;
+    max-width: 520px !important;
+    min-height: 100%;
+
+    margin: 0 auto !important;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    text-align: center;
+  }
+
+
+  .welcome-screen h1 {
+    margin: 0 0 14px !important;
+
+    font-size: clamp(38px, 11vw, 56px) !important;
+    line-height: .95 !important;
+    letter-spacing: -.04em;
+  }
+
+
+  .welcome-screen__intro {
+    width: 100%;
+    max-width: 460px;
+
+    margin: 0 auto 22px !important;
+
+    font-size: 16px !important;
+    line-height: 1.45 !important;
+  }
+
+
+  /* Dlaždice pod sebou */
+
+  .welcome-help {
+    width: 100%;
+
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+
+    gap: 12px !important;
+
+    margin: 0 0 20px !important;
+  }
+
+
+  .welcome-help__item {
+    width: 100%;
+
+    padding: 18px 16px !important;
+
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 18px !important;
+
+    background: rgba(12, 30, 38, .28) !important;
+
+    box-shadow:
+      0 12px 30px rgba(0,0,0,.12);
+
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+
+
+  /* Obě ikony mají stejný prostor */
+
+  .welcome-slider-demo,
+  .welcome-hotspot-demo-wrap {
+    width: 100%;
+    height: 48px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    margin: 0 0 8px !important;
+  }
+
+
+  .welcome-slider-demo {
+    gap: 9px !important;
+    font-size: 11px !important;
+  }
+
+
+  .welcome-slider-demo__line {
+    width: 92px !important;
+    height: 2px !important;
+  }
+
+
+  .welcome-slider-demo__handle {
+    width: 32px !important;
+    height: 32px !important;
+    font-size: 15px !important;
+  }
+
+
+  .welcome-hotspot-demo {
+    width: 16px !important;
+    height: 16px !important;
+    min-height: 16px !important;
+
+    margin: 0 !important;
+    flex: 0 0 16px !important;
+  }
+
+
+  .welcome-help__item h2 {
+    min-height: 0 !important;
+
+    margin: 6px 0 7px !important;
+
+    font-size: 19px !important;
+    line-height: 1.15 !important;
+  }
+
+
+  .welcome-help__item p {
+    margin: 0 !important;
+
+    font-size: 14px !important;
+    line-height: 1.42 !important;
+
+    opacity: .95;
+  }
+
+
+  /* Logo */
+
+  .welcome-screen__logo {
+    display: block;
+
+    width: 92px !important;
+    max-width: 24vw !important;
+    height: auto !important;
+
+    margin: 0 auto 16px !important;
+
+    object-fit: contain !important;
+  }
+
+
+  /* Tlačítko */
+
+  .welcome-screen__button {
+    align-self: center;
+
+    min-height: 48px;
+
+    padding: 12px 26px !important;
+
+    border-radius: 999px !important;
+
+    font-size: 16px !important;
+    font-weight: 800 !important;
+
+    box-shadow: 0 10px 24px rgba(0,0,0,.18);
+  }
+
+}
