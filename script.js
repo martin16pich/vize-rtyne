@@ -174,8 +174,12 @@
 
 
   welcomeContinue.addEventListener("click", function () {
-    welcomeScreen.classList.add("is-hidden");
-  });
+  welcomeScreen.classList.add("is-hidden");
+
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  window.scrollTo(0, 0);
+});
 })();
 
 /* ==========================================================
