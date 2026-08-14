@@ -21,7 +21,7 @@ window.SETTINGS = {
     hornicka: 2,
     zabarna: 3,
     namesti: 4,
-    kampelicka: 5,
+    horni: 5,
     odpady: 6,
     "rtynsky-trail": 7,
     "bezecke-trasy-palenka": 8

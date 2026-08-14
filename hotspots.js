@@ -1,7 +1,7 @@
 (function () {
   const sectionFiles = {
     zabarna: 'data/hotspots.json',
-    kampelicka: 'data/kampelicka-hotspots.json',
+    horni: 'data/horni-hotspots.json',
     hornicka: 'data/hornicka-hotspots.json',
     namesti: 'data/namesti-hotspots.json',
     centrum: 'data/centrum-hotspots.json',
@@ -12,7 +12,7 @@
 
   const currentSectionFiles = {
     zabarna: 'data/zabarna-current.json',
-    kampelicka: 'data/kampelicka-current.json',
+    horni: 'data/horni-current.json',
     hornicka: 'data/hornicka-current.json',
     namesti: 'data/namesti-current.json',
     centrum: 'data/centrum-current.json',
