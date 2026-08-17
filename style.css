@@ -3404,3 +3404,24 @@ padding-top: 8px !important;
   background: var(--green);
   color: #000;
 }
+
+/* ==========================================================
+   HLAVNÍ MENU – pohyb zeleného zvýraznění
+   ========================================================== */
+
+.nav a.active {
+  background: var(--green);
+  color: #fff;
+}
+
+.nav:hover a.active {
+  background: transparent !important;
+  color: #fff !important;
+}
+
+.nav a:hover,
+.nav .dropdown-toggle:hover,
+.nav:hover a.active:hover {
+  background: var(--green) !important;
+  color: #fff !important;
+}
