@@ -3414,10 +3414,6 @@ padding-top: 8px !important;
   color: #fff;
 }
 
-.nav:hover a.active {
-  background: transparent !important;
-  color: #fff !important;
-}
 
 .nav a:hover,
 .nav .dropdown-toggle:hover,
@@ -3471,4 +3467,53 @@ padding-top: 8px !important;
   .topbar {
     top: 126px !important;
   }
+}
+
+/* ==========================================================
+   DESKTOP – všechny nadpisy sekcí výš
+   ========================================================== */
+
+@media (min-width: 821px) {
+
+  .city-title,
+  .title-card {
+    top: 34px !important;
+  }
+
+  .city-title h1,
+  .title-card h1 {
+    font-size: clamp(46px, 5.6vw, 88px) !important;
+    line-height: .92 !important;
+  }
+
+  .city-title p {
+    margin-top: 8px !important;
+  }
+
+  .topbar {
+    top: 160px !important;
+  }
+}
+
+/* ==========================================================
+   MENU MÍSTA – oprava aktivní položky
+   ========================================================== */
+
+.dropdown-menu a.active {
+  background: var(--green) !important;
+  color: #111 !important;
+}
+
+/* Když najedu na jinou položku,
+   aktivní zelená se dočasně vypne */
+.dropdown-menu:hover a.active {
+  background: transparent !important;
+  color: #111 !important;
+}
+
+/* Položka pod myší je zelená */
+.dropdown-menu a:hover,
+.dropdown-menu:hover a.active:hover {
+  background: var(--green) !important;
+  color: #111 !important;
 }
