@@ -3425,3 +3425,23 @@ padding-top: 8px !important;
   background: var(--green) !important;
   color: #fff !important;
 }
+
+/* ==========================================================
+   ÚVODNÍ MAPA – menší nadpis na desktopu, aby nekryl body
+   ========================================================== */
+
+@media (min-width: 821px) {
+  .city-title {
+    top: 92px !important;
+    width: min(86vw, 980px) !important;
+  }
+
+  .city-title h1 {
+    font-size: clamp(56px, 6vw, 92px) !important;
+    line-height: .92 !important;
+  }
+
+  .city-title p {
+    margin-top: 10px !important;
+  }
+}
