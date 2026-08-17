@@ -3517,3 +3517,16 @@ padding-top: 8px !important;
   background: var(--green) !important;
   color: #111 !important;
 }
+/* ==========================================================
+   O PROJEKTU – nadpis výš
+   ========================================================== */
+
+@media (min-width: 821px) {
+  .about-project__masthead {
+    margin-top: -28px !important;
+  }
+
+  .about-project__header h1 {
+    transform: translateY(-80px);
+  }
+}
