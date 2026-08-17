@@ -88,6 +88,29 @@
   let currentTrigger = null;
   let currentMode = 'vision';
 
+  function preloadGalleryNeighbor(index) {
+  if (!currentItems.length) return;
+  if (currentMode !== 'vision') return;
+
+  const item = currentItems[index];
+  if (!item?.image) return;
+
+  const src = isMobile()
+    ? mobileImagePath(item.image)
+    : item.image;
+
+  const preload = new Image();
+
+  preload.onerror = () => {
+    preload.onerror = null;
+
+    if (isMobile()) {
+      preload.src = item.image;
+    }
+  };
+
+  preload.src = src;
+}
   function renderGalleryItem() {
     if (!currentItems.length) return;
 
@@ -99,6 +122,17 @@
     modal.classList.toggle('vision-gallery--vision', currentMode === 'vision');
     imageEl.parentElement.hidden = currentMode === 'current';
     imageEl.hidden = !original;
+
+    if (currentItems.length > 1) {
+  const previousIndex =
+    (currentIndex - 1 + currentItems.length) % currentItems.length;
+
+  const nextIndex =
+    (currentIndex + 1) % currentItems.length;
+
+  preloadGalleryNeighbor(previousIndex);
+  preloadGalleryNeighbor(nextIndex);
+}
 
     if (original) {
       imageEl.onerror = () => {
