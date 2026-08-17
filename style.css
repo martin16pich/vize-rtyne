@@ -3445,3 +3445,30 @@ padding-top: 8px !important;
     margin-top: 10px !important;
   }
 }
+
+/* ==========================================================
+   ÚVODNÍ MAPA – nadpis nad menu
+   ========================================================== */
+
+@media (min-width: 821px) {
+
+  .city-title {
+    top: 16px !important;
+    width: min(92vw, 1100px) !important;
+    z-index: 60 !important;
+  }
+
+  .city-title h1 {
+    font-size: clamp(44px, 5vw, 78px) !important;
+    line-height: .95 !important;
+  }
+
+  .city-title p {
+    margin-top: 8px !important;
+    font-size: clamp(15px, 1.4vw, 22px) !important;
+  }
+
+  .topbar {
+    top: 126px !important;
+  }
+}
