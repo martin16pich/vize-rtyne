@@ -34,21 +34,40 @@
   before.style.width = `${value}%`; 
   line.style.left = `${value}%`; 
 
-  const currentLabel = container.querySelector(
+function setPercent(percent, emitEvent = true) {
+  const value = clamp(Number(percent) || 0, 0, 100);
+
+  slider.value = String(value);
+  before.style.width = `${value}%`;
+  line.style.left = `${value}%`;
+
+  const currentLabels = container.querySelectorAll(
     '.current-label-button, .labels span:first-child, .mobile-current-button'
   );
 
-  const visionLabel = container.querySelector(
+  const visionLabels = container.querySelectorAll(
     '.vision-label-button, .labels span:last-child, .mobile-vision-button'
   );
 
-  if (currentLabel) {
-    currentLabel.classList.toggle('slider-edge-hidden', value <= 8);
-  }
+  currentLabels.forEach((label) => {
+    label.classList.toggle('slider-edge-hidden', value <= 8);
+  });
 
-  if (visionLabel) {
-    visionLabel.classList.toggle('slider-edge-hidden', value >= 92);
+  visionLabels.forEach((label) => {
+    label.classList.toggle('slider-edge-hidden', value >= 92);
+  });
+
+  if (emitEvent) {
+    document.dispatchEvent(
+      new CustomEvent('compare:change', {
+        detail: {
+          container,
+          percent: value
+        }
+      })
+    );
   }
+}
 
   if (emitEvent) { 
     document.dispatchEvent( 
