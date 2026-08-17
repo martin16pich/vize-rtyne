@@ -3300,3 +3300,9 @@ padding-top: 8px !important;
     opacity .22s ease,
     visibility .22s ease !important;
 }
+
+.compare,
+.compare * {
+  user-select: none;
+  -webkit-user-select: none;
+}

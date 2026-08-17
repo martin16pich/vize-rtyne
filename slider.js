@@ -78,11 +78,13 @@
     }
 
     function startDragging(event) {
-      if (event.pointerType === 'mouse' && event.button !== 0) return;
-      if (isInteractiveElement(event.target)) return;
+  if (event.pointerType === 'mouse' && event.button !== 0) return;
+  if (isInteractiveElement(event.target)) return;
 
-      isDragging = true;
-      activePointerId = event.pointerId;
+  event.preventDefault();
+
+  isDragging = true;
+  activePointerId = event.pointerId;
 
       try {
         container.setPointerCapture(event.pointerId);
