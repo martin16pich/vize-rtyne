@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "id": "lanovka",
+    "title": "Lanovka",
+    "text": "Aktivní prvek pro děti i dospělé",
+    "image": "images/dolni/hotspots/lanovka.jpg",
+    "x": 37.39,
+    "y": 60.59
+  },
+  {
+    "id": "houpacka",
+    "title": "Houpačka - beranidlo",
+    "text": "Zážitkový prvek pro děti i dospělé",
+    "image": "images/dolni/hotspots/houpacka.jpg",
+    "x": 46.14,
+    "y": 72.55
+  }
+]
