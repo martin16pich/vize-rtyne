@@ -27,65 +27,70 @@
     */
     container.style.touchAction = 'pan-y';
 
-    function setPercent(percent, emitEvent = true) { 
-  const value = clamp(Number(percent) || 0, 0, 100); 
+    function setPercent(percent, emitEvent = true) {
+      const value = clamp(Number(percent) || 0, 0, 100);
 
-  slider.value = String(value); 
-  before.style.width = `${value}%`; 
-  line.style.left = `${value}%`; 
+      slider.value = String(value);
+      before.style.width = `${value}%`;
+      line.style.left = `${value}%`;
 
-function setPercent(percent, emitEvent = true) {
-  const value = clamp(Number(percent) || 0, 0, 100);
+      /*
+        Schovávání tlačítek u krajů slideru.
 
-  slider.value = String(value);
-  before.style.width = `${value}%`;
-  line.style.left = `${value}%`;
+        0–8 %:
+        skryje Současnost
 
-  const currentLabels = container.querySelectorAll(
-    '.current-label-button, .labels span:first-child, .mobile-current-button'
-  );
+        92–100 %:
+        skryje Vizi
 
-  const visionLabels = container.querySelectorAll(
-    '.vision-label-button, .labels span:last-child, .mobile-vision-button'
-  );
+        querySelectorAll je důležitý, protože na mobilu
+        existují samostatná mobilní tlačítka.
+      */
+      const currentLabels = container.querySelectorAll(
+        '.current-label-button, .labels span:first-child, .mobile-current-button'
+      );
 
-  currentLabels.forEach((label) => {
-    label.classList.toggle('slider-edge-hidden', value <= 8);
-  });
+      const visionLabels = container.querySelectorAll(
+        '.vision-label-button, .labels span:last-child, .mobile-vision-button'
+      );
 
-  visionLabels.forEach((label) => {
-    label.classList.toggle('slider-edge-hidden', value >= 92);
-  });
+      currentLabels.forEach((label) => {
+        label.classList.toggle(
+          'slider-edge-hidden',
+          value <= 8
+        );
+      });
 
-  if (emitEvent) {
-    document.dispatchEvent(
-      new CustomEvent('compare:change', {
-        detail: {
-          container,
-          percent: value
-        }
-      })
-    );
-  }
-}
+      visionLabels.forEach((label) => {
+        label.classList.toggle(
+          'slider-edge-hidden',
+          value >= 92
+        );
+      });
 
-  if (emitEvent) { 
-    document.dispatchEvent( 
-      new CustomEvent('compare:change', { 
-        detail: { 
-          container, 
-          percent: value 
-        } 
-      }) 
-    ); 
-  } 
-}
+      if (emitEvent) {
+        document.dispatchEvent(
+          new CustomEvent('compare:change', {
+            detail: {
+              container,
+              percent: value
+            }
+          })
+        );
+      }
+    }
 
     function percentFromPointer(event) {
       const rect = container.getBoundingClientRect();
-      if (!rect.width) return Number(slider.value || 50);
 
-      return ((event.clientX - rect.left) / rect.width) * 100;
+      if (!rect.width) {
+        return Number(slider.value || 50);
+      }
+
+      return (
+        (event.clientX - rect.left) /
+        rect.width
+      ) * 100;
     }
 
     function isInteractiveElement(target) {
@@ -97,36 +102,71 @@ function setPercent(percent, emitEvent = true) {
     }
 
     function startDragging(event) {
-  if (event.pointerType === 'mouse' && event.button !== 0) return;
-  if (isInteractiveElement(event.target)) return;
+      if (
+        event.pointerType === 'mouse' &&
+        event.button !== 0
+      ) {
+        return;
+      }
 
-  event.preventDefault();
+      if (isInteractiveElement(event.target)) {
+        return;
+      }
 
-  isDragging = true;
-  activePointerId = event.pointerId;
+      /*
+        Zabrání označování textu při tažení slideru
+        na desktopu.
+      */
+      event.preventDefault();
+
+      isDragging = true;
+      activePointerId = event.pointerId;
 
       try {
-        container.setPointerCapture(event.pointerId);
+        container.setPointerCapture(
+          event.pointerId
+        );
       } catch (_) {
         // Některé starší prohlížeče pointer capture nepodporují.
       }
 
-      setPercent(percentFromPointer(event));
+      setPercent(
+        percentFromPointer(event)
+      );
     }
 
     function moveDragging(event) {
-      if (!isDragging || event.pointerId !== activePointerId) return;
-      setPercent(percentFromPointer(event));
+      if (
+        !isDragging ||
+        event.pointerId !== activePointerId
+      ) {
+        return;
+      }
+
+      setPercent(
+        percentFromPointer(event)
+      );
     }
 
     function stopDragging(event) {
-      if (!isDragging || event.pointerId !== activePointerId) return;
+      if (
+        !isDragging ||
+        event.pointerId !== activePointerId
+      ) {
+        return;
+      }
 
       isDragging = false;
 
       try {
-        if (container.hasPointerCapture(event.pointerId)) {
-          container.releasePointerCapture(event.pointerId);
+        if (
+          container.hasPointerCapture(
+            event.pointerId
+          )
+        ) {
+          container.releasePointerCapture(
+            event.pointerId
+          );
         }
       } catch (_) {
         // Bezpečné ukončení i ve starších prohlížečích.
@@ -135,24 +175,41 @@ function setPercent(percent, emitEvent = true) {
       activePointerId = null;
     }
 
-    container.addEventListener('pointerdown', startDragging);
-    container.addEventListener('pointermove', moveDragging);
-    container.addEventListener('pointerup', stopDragging);
-    container.addEventListener('pointercancel', stopDragging);
+    container.addEventListener(
+      'pointerdown',
+      startDragging
+    );
+
+    container.addEventListener(
+      'pointermove',
+      moveDragging
+    );
+
+    container.addEventListener(
+      'pointerup',
+      stopDragging
+    );
+
+    container.addEventListener(
+      'pointercancel',
+      stopDragging
+    );
 
     /*
       Ovládání klávesnicí zůstává funkční:
       Tabem se zaměří skrytý range a šipkami se mění pozice.
     */
     slider.addEventListener('input', () => {
-      setPercent(Number(slider.value));
+      setPercent(
+        Number(slider.value)
+      );
     });
 
     /*
-      Po kliknutí na prázdnou část fotografie se jezdec přesune rovnou
-      na dané místo. Pointerdown už změnu provede, click zde není potřeba.
+      Nastavení počáteční pozice slideru.
     */
-
-    setPercent(Number(slider.value || 50));
+    setPercent(
+      Number(slider.value || 50)
+    );
   });
 })();
