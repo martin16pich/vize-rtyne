@@ -182,3 +182,63 @@
 });
 })();
 
+/* ==========================================================
+   MOBIL – přednačtení hlavních obrázků následujících sekcí
+   ========================================================== */
+
+(function () {
+  if (!window.matchMedia('(max-width: 820px)').matches) return;
+
+  const sections = Array.from(
+    document.querySelectorAll('.compare')
+  );
+
+  function preloadSection(section) {
+    if (!section || section.dataset.imagesPreloaded === '1') return;
+
+    section.dataset.imagesPreloaded = '1';
+
+    const sources = section.querySelectorAll(
+      'picture source[media*="820"]'
+    );
+
+    sources.forEach((source) => {
+      const src = source.getAttribute('srcset');
+
+      if (!src) return;
+
+      const image = new Image();
+      image.src = src;
+    });
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+
+        const section = entry.target;
+        const index = sections.indexOf(section);
+
+        // aktuální sekce
+        preloadSection(section);
+
+        // dvě následující sekce dopředu
+        preloadSection(sections[index + 1]);
+        preloadSection(sections[index + 2]);
+      });
+    },
+    {
+      rootMargin: '100% 0px 100% 0px'
+    }
+  );
+
+  sections.forEach((section) => {
+    observer.observe(section);
+  });
+
+  // Po načtení stránky připravíme první tři sekce.
+  preloadSection(sections[0]);
+  preloadSection(sections[1]);
+  preloadSection(sections[2]);
+})();
