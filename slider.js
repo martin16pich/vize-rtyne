@@ -35,17 +35,23 @@
       line.style.left = `${value}%`;
 
       /*
-        Schovávání tlačítek u krajů slideru.
+        Schovávání tlačítek u krajů slideru:
 
-        0–8 %:
-        skryje Současnost
+        DESKTOP:
+        0–8 %       = schovat Současnost
+        92–100 %    = schovat Vizi
 
-        92–100 %:
-        skryje Vizi
-
-        querySelectorAll je důležitý, protože na mobilu
-        existují samostatná mobilní tlačítka.
+        MOBIL:
+        0–15 %      = schovat Současnost
+        85–100 %    = schovat Vizi
       */
+
+      const isMobile = window.matchMedia(
+        '(max-width: 820px)'
+      ).matches;
+
+      const edgeLimit = isMobile ? 15 : 8;
+
       const currentLabels = container.querySelectorAll(
         '.current-label-button, .labels span:first-child, .mobile-current-button'
       );
@@ -57,14 +63,14 @@
       currentLabels.forEach((label) => {
         label.classList.toggle(
           'slider-edge-hidden',
-          value <= 8
+          value <= edgeLimit
         );
       });
 
       visionLabels.forEach((label) => {
         label.classList.toggle(
           'slider-edge-hidden',
-          value >= 92
+          value >= (100 - edgeLimit)
         );
       });
 
