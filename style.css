@@ -3376,3 +3376,31 @@ padding-top: 8px !important;
     opacity: 0;
   }
 }
+/* ==========================================================
+   MENU MÍSTA – zelené zvýraznění se přesouvá pod kurzorem
+   ========================================================== */
+
+.dropdown-menu a:hover {
+  background: var(--green) !important;
+  color: #000 !important;
+}
+
+/* Když je kurzor uvnitř menu,
+   původně aktivní položka už nezůstává zelená */
+.dropdown-menu:hover a.active {
+  background: transparent !important;
+  color: #111 !important;
+}
+
+/* Položka právě pod kurzorem je zelená */
+.dropdown-menu:hover a.active:hover,
+.dropdown-menu a:hover {
+  background: var(--green) !important;
+  color: #000 !important;
+}
+
+/* Po odjetí myši z menu se aktivní položka zase zvýrazní */
+.dropdown-menu a.active {
+  background: var(--green);
+  color: #000;
+}
