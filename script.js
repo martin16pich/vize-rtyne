@@ -34,20 +34,29 @@
 
   window.addEventListener("scroll", setActive, { passive: true });
   window.addEventListener("resize", setActive);
+
   setActive();
 })();
 
+
+/* ==========================================================
+   BODY NA ÚVODNÍ MAPĚ
+   ========================================================== */
+
 (function () {
   const cityPoints = document.getElementById("cityPoints");
+
   if (!cityPoints) return;
 
   function goToSection(sectionId) {
     const target = document.getElementById(sectionId);
+
     if (!target) return;
 
     /*
-      Nepoužíváme pouze výchozí skok kotvy. Pořadí sekcí je dynamické,
-      proto vždy vyhledáme cílový element podle jeho skutečného ID.
+      Nepoužíváme pouze výchozí skok kotvy.
+      Pořadí sekcí je dynamické, proto vždy vyhledáme
+      cílový element podle jeho skutečného ID.
     */
     target.scrollIntoView({
       behavior: "smooth",
@@ -62,9 +71,10 @@
   function renderCityPlaces(places) {
     cityPoints.innerHTML = "";
 
-    const orderedPlaces = [...places].sort((a, b) =>
-      (window.getSectionOrder?.(a.id) ?? 999) -
-      (window.getSectionOrder?.(b.id) ?? 999)
+    const orderedPlaces = [...places].sort(
+      (a, b) =>
+        (window.getSectionOrder?.(a.id) ?? 999) -
+        (window.getSectionOrder?.(b.id) ?? 999)
     );
 
     orderedPlaces.forEach((place) => {
@@ -72,11 +82,14 @@
 
       link.className = "city-hotspot";
       link.href = `#${place.id}`;
+
       link.style.setProperty("--x", `${place.x}%`);
       link.style.setProperty("--y", `${place.y}%`);
+
       link.setAttribute("aria-label", place.title);
 
       const tooltip = document.createElement("span");
+
       tooltip.className = "city-tooltip";
       tooltip.textContent = place.title;
 
@@ -95,6 +108,7 @@
 
       link.addEventListener("click", (event) => {
         event.preventDefault();
+
         goToSection(place.id);
       });
 
@@ -105,7 +119,9 @@
   fetch("data/places.json")
     .then((response) => {
       if (!response.ok) {
-        throw new Error("Soubor places.json se nepodařilo načíst.");
+        throw new Error(
+          "Soubor places.json se nepodařilo načíst."
+        );
       }
 
       return response.json();
@@ -116,7 +132,11 @@
     });
 })();
 
-/* Mobilní rozbalovací menu Místa */
+
+/* ==========================================================
+   MOBILNÍ ROZBALOVACÍ MENU MÍSTA
+   ========================================================== */
+
 (function () {
   const dropdown = document.querySelector(".dropdown");
   const toggle = document.querySelector(".dropdown-toggle");
@@ -146,7 +166,9 @@
   });
 
   menu.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => closeMenu());
+    link.addEventListener("click", () => {
+      closeMenu();
+    });
   });
 
   document.addEventListener("click", (event) => {
@@ -162,39 +184,55 @@
   });
 })();
 
+
 /* ==========================================================
-   ÚVODNÍ OBRAZOVKA – zobrazí se pouze při první návštěvě
+   ÚVODNÍ OBRAZOVKA
+   Zobrazí se při každém načtení stránky.
    ========================================================== */
 
 (function () {
-  const welcomeScreen = document.getElementById("welcomeScreen");
-  const welcomeContinue = document.getElementById("welcomeContinue");
+  const welcomeScreen =
+    document.getElementById("welcomeScreen");
+
+  const welcomeContinue =
+    document.getElementById("welcomeContinue");
 
   if (!welcomeScreen || !welcomeContinue) return;
 
-
   welcomeContinue.addEventListener("click", function () {
-  welcomeScreen.classList.add("is-hidden");
+    welcomeScreen.classList.add("is-hidden");
 
-  document.documentElement.scrollTop = 0;
-  document.body.scrollTop = 0;
-  window.scrollTo(0, 0);
-});
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+
+    window.scrollTo(0, 0);
+  });
 })();
-/* ==========================================================
-   MOBIL – načítání obrázků ve dvou krocích
 
-   1. všechny hlavní obrázky Současnost + Vize
-   2. teprve potom obrázky hotspotů
+
+/* ==========================================================
+   MOBIL – NAČÍTÁNÍ OBRÁZKŮ VE DVOU KROCÍCH
+
+   KROK 1:
+   všechny hlavní fotografie Současnost + Vize
+
+   KROK 2:
+   teprve potom fotografie hotspotů
    ========================================================== */
 
 (function () {
-  if (!window.matchMedia('(max-width: 820px)').matches) return;
-
   /*
-    Načte jeden obrázek a vrátí Promise.
-    Pokračujeme i v případě, že některý obrázek neexistuje.
+    Toto přednačítání používáme pouze na mobilu.
   */
+  if (!window.matchMedia("(max-width: 820px)").matches) {
+    return;
+  }
+
+
+  /* ----------------------------------------------------------
+     Pomocná funkce pro načtení jednoho obrázku
+     ---------------------------------------------------------- */
+
   function preloadImage(src) {
     return new Promise((resolve) => {
       if (!src) {
@@ -204,103 +242,178 @@
 
       const image = new Image();
 
-      image.onload = resolve;
-      image.onerror = resolve;
+      image.onload = () => resolve();
+      image.onerror = () => resolve();
 
       image.src = src;
     });
   }
 
-  /*
-    ========================================================
-    KROK 1
-    Hlavní fotografie Současnost + Vize
-    ========================================================
-  */
+
+  /* ==========================================================
+     KROK 1
+     HLAVNÍ FOTOGRAFIE SOUČASNOST + VIZE
+     ========================================================== */
 
   async function preloadMainImages() {
-    const sources = Array.from(
-      document.querySelectorAll(
-        '.compare picture source[media*="820"]'
-      )
+    const sections = Array.from(
+      document.querySelectorAll(".compare")
     );
 
-    const imagePaths = sources
-      .map((source) => source.getAttribute('srcset'))
-      .filter(Boolean);
+    const mobileImages = [];
+
+    sections.forEach((section) => {
+      /*
+        Projdeme všechny hlavní <picture> elementy
+        uvnitř porovnávací sekce.
+      */
+      const pictures = Array.from(
+        section.querySelectorAll("picture")
+      );
+
+      pictures.forEach((picture) => {
+        /*
+          Mobilní source:
+          např. images/centrum/vize-mobile.webp
+        */
+        const mobileSource = picture.querySelector(
+          'source[media*="820"]'
+        );
+
+        const img = picture.querySelector("img");
+
+        /*
+          Hlavní obrázky na mobilu nechceme načítat lazy.
+          Safari je má začít řešit okamžitě.
+        */
+        if (img) {
+          img.removeAttribute("loading");
+
+          /*
+            Dáme hlavním obrázkům vyšší prioritu
+            než doplňkovým fotografiím.
+          */
+          img.setAttribute(
+            "fetchpriority",
+            "high"
+          );
+        }
+
+        /*
+          Pro preload používáme přímo mobilní WebP.
+        */
+        if (mobileSource) {
+          const src =
+            mobileSource.getAttribute("srcset");
+
+          if (src) {
+            mobileImages.push(src);
+          }
+        }
+      });
+    });
 
     /*
-      Odstranění případných duplicit.
+      Kdyby se stejná cesta objevila vícekrát,
+      nestahujeme ji opakovaně.
     */
-    const uniqueImages = [...new Set(imagePaths)];
+    const uniqueImages = [
+      ...new Set(mobileImages)
+    ];
 
+    /*
+      Všechny hlavní mobilní fotografie
+      spustíme paralelně.
+    */
     await Promise.all(
-      uniqueImages.map((src) => preloadImage(src))
+      uniqueImages.map((src) =>
+        preloadImage(src)
+      )
     );
   }
 
-  /*
-    ========================================================
-    KROK 2
-    Obrázky hotspotů
-    ========================================================
-  */
+
+  /* ==========================================================
+     KROK 2
+     OBRÁZKY HOTSPOTŮ
+     ========================================================== */
 
   async function preloadHotspotImages() {
     const hotspotContainers = Array.from(
-      document.querySelectorAll('.hotspots[data-hotspots]')
+      document.querySelectorAll(
+        ".hotspots[data-hotspots]"
+      )
     );
 
     for (const container of hotspotContainers) {
-      const jsonPath = container.dataset.hotspots;
+      const jsonPath =
+        container.dataset.hotspots;
 
       if (!jsonPath) continue;
 
       try {
-        const response = await fetch(jsonPath);
+        const response =
+          await fetch(jsonPath);
 
-        if (!response.ok) continue;
+        if (!response.ok) {
+          continue;
+        }
 
-        const hotspots = await response.json();
+        const hotspots =
+          await response.json();
 
+        /*
+          Hotspoty načítáme až po hlavních obrázcích.
+        */
         for (const hotspot of hotspots) {
           if (!hotspot.image) continue;
 
           /*
-            Na mobilu načítáme pouze mobilní WebP.
-            Desktopový JPG se zbytečně nestahuje.
-          */
-          const mobileImage = hotspot.image.replace(
-            /\.(jpg|jpeg|png|webp)$/i,
-            '-mobile.webp'
-          );
+            Z desktopové cesty vytvoříme cestu
+            k mobilnímu WebP.
 
-          await preloadImage(mobileImage);
+            Např.:
+
+            lavicka.jpg
+
+            →
+
+            lavicka-mobile.webp
+          */
+          const mobileImage =
+            hotspot.image.replace(
+              /\.(jpg|jpeg|png|webp)$/i,
+              "-mobile.webp"
+            );
+
+          await preloadImage(
+            mobileImage
+          );
         }
       } catch (error) {
         console.warn(
-          'Nepodařilo se přednačíst hotspoty:',
+          "Nepodařilo se přednačíst hotspoty:",
           jsonPath
         );
       }
     }
   }
 
-  /*
-    ========================================================
-    SPUŠTĚNÍ
 
-    Nejdřív MUSÍ skončit hlavní obrázky.
-    Až potom začnou hotspoty.
-    ========================================================
-  */
+  /* ==========================================================
+     SPUŠTĚNÍ NAČÍTÁNÍ
+     ========================================================== */
 
   async function startMobilePreloading() {
+    /*
+      Nejdříve počkáme na všechny hlavní fotografie
+      Současnost + Vize.
+    */
     await preloadMainImages();
 
     /*
-      Hlavní Současnost + Vize jsou připravené.
-      Teprve teď spustíme hotspoty.
+      Teprve potom spustíme hotspotové fotografie.
+      Na ty už uživatel nemusí čekat při scrollování.
     */
     preloadHotspotImages();
   }
