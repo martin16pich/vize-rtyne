@@ -3284,3 +3284,19 @@ padding-top: 8px !important;
   }
 
 }
+
+.slider-edge-hidden {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.labels span,
+.current-label-button,
+.vision-label-button,
+.mobile-current-button,
+.mobile-vision-button {
+  transition:
+    opacity .22s ease,
+    visibility .22s ease !important;
+}

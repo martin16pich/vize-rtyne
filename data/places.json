@@ -9,7 +9,8 @@
     "id": "horni",
     "title": "Hřiště na horní Rtyni",
     "x": 96.2,
-    "y": 47.42
+    "y": 47.42,
+    "icon": "arrow-right"
   },
   {
     "id": "hornicka",
@@ -39,12 +40,14 @@
     "id": "rtynsky-trail",
     "title": "Rtyňský trail",
     "x": 61.42,
-    "y": 96.05
+    "y": 96.05,
+    "icon": "arrow-down"
   },
   {
     "id": "bezecke-trasy-palenka",
     "title": "Běžecké trasy Pálenka",
     "x": 8.04,
-    "y": 85.84
+    "y": 85.84,
+    "icon": "arrow-left"
   }
 ]
