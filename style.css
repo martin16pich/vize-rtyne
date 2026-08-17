@@ -3306,3 +3306,73 @@ padding-top: 8px !important;
   user-select: none;
   -webkit-user-select: none;
 }
+
+.welcome-demo-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  width: 100%;
+}
+
+.welcome-demo-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 7px 14px;
+
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  border-radius: 999px;
+
+  background: rgba(8, 17, 12, 0.75);
+  color: #fff;
+
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1;
+
+  white-space: nowrap;
+
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.22);
+}
+
+.welcome-hotspot-demo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+}
+.welcome-demo-label {
+  position: relative;
+  isolation: isolate;
+}
+
+.welcome-demo-label::before {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  border: 2px solid rgba(255, 255, 255, 0.55);
+  border-radius: 999px;
+  pointer-events: none;
+
+  animation: welcomeLabelPulse 1.8s ease-out infinite;
+}
+
+@keyframes welcomeLabelPulse {
+  0% {
+    transform: scale(0.94);
+    opacity: 0.75;
+  }
+
+  75% {
+    transform: scale(1.14);
+    opacity: 0;
+  }
+
+  100% {
+    transform: scale(1.14);
+    opacity: 0;
+  }
+}
