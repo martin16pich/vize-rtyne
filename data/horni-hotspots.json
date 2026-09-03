@@ -1,26 +1,42 @@
 [
   {
-    "id": "kulickova-draha",
-    "title": "Kuličková dráha",
-    "text": "Herní prvek pro děti.",
-    "image": "images/horni/hotspots/kulickova-draha.jpg",
-    "x": 57.75,
-    "y": 69.03
-  },
-  {
     "id": "altan",
     "title": "Altán s lavičkami",
-    "text": "Nový altán sloužící k posezení kolemjdoucích, nebo rodičů dětí hrajících si na hřišti.",
+    "text": "Nový altán sloužící k posezení kolemjdoucích. Herní stůl (šachy a člověče nezlob se). Solární střecha a nabíjecí lavičky.",
     "image": "images/horni/hotspots/altan.jpg",
     "x": 49.15,
     "y": 60.02
   },
   {
-    "id": "pruzinova-houpacka",
-    "title": "Pružinová houpačka",
-    "text": "Houpačky pro malé děti.",
-    "image": "images/horni/hotspots/pruzinova-houpacka.jpg",
+    "id": "ping-pong",
+    "title": "Pingpongový stůl",
+    "text": "Stůl na stolní tenis. Možnost pořádání malých turnajů.",
+    "image": "images/horni/hotspots/pinec.jpg",
+    "x": 54.84,
+    "y": 67.54
+  },
+  {
+    "id": "sedaci-stupne",
+    "title": "Sedací stupně",
+    "text": "Malá tribuna pro sledování hry nebo pro volnočasový odpočinek.",
+    "image": "images/horni/hotspots/stupně.jpg",
+    "x": 59.3,
+    "y": 66.06
+  },
+  {
+    "id": "ovocny-zahon",
+    "title": "Ovocné záhony",
+    "text": "Záhony s ovocnými keři.",
+    "image": "images/horni/hotspots/ovoce.jpg",
     "x": 48.53,
     "y": 68.22
+  },
+  {
+    "id": "balanc",
+    "title": "Balanční hřiště",
+    "text": "Přírodní prolézačka pro malé děti.",
+    "image": "images/horni/hotspots/balanc.jpg",
+    "x": 60.32,
+    "y": 73.12
   }
 ]
