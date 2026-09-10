@@ -4,31 +4,31 @@
     "title": "Bezpečný chodník",
     "text": "Rozšířený bezbariérový chodník.",
     "image": "images/hornicka/hotspots/chodnik.jpg",
-    "x": 55.6,
-    "y": 52.13
+    "x": 25.91,
+    "y": 57.98
   },
   {
     "id": "parkovaci-zalivy",
     "title": "Parkovací zálivy",
     "text": "Dostatek parkovacích stání.",
     "image": "images/hornicka/hotspots/parkovaci-zalivy.jpg",
-    "x": 54.44,
-    "y": 67.8
+    "x": 79.89,
+    "y": 66.48
   },
   {
     "id": "zvysene-krizovatky",
     "title": "Zvýšené křižovatky",
     "text": "Dlážděné a vyvýšené plochy v křižovatkách přispěje k pomalejší a bezpečnější dopravě.",
     "image": "images/hornicka/hotspots/zvysene-krizovatky.jpg",
-    "x": 50.62,
-    "y": 61.66
+    "x": 45.83,
+    "y": 54.1
   },
   {
     "id": "stromy-a-zahony",
     "title": "Stromy a záhony",
     "text": "Více zeleně v Hornické ulici. Stromy, které dodají stín a kvetoucí záhony pro příjemnější pobyt.",
     "image": "images/hornicka/hotspots/stromy-a-zahony.jpg",
-    "x": 48.63,
-    "y": 38.51
+    "x": 68.95,
+    "y": 56.65
   }
 ]
