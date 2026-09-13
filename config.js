@@ -14,8 +14,7 @@
    =========================================================== */
 
 window.SETTINGS = {
-  password: "ks40",
-
+ 
   sectionOrder: {
     centrum: 1,
     hornicka: 2,
